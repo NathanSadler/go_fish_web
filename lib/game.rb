@@ -9,4 +9,8 @@ class Game
     players.append(player)
   end
 
+  def empty?
+    players.empty?
+  end
+
 end

@@ -16,4 +16,15 @@ describe "Game" do
       expect(game.players).to(eq([player]))
     end
   end
+
+  context '.empty?' do
+    let(:game) {Game.new}
+    it("is true if there are no players in the game") do
+      expect(game.empty?).to(eq(true))
+    end
+    it("is false if there are players in the game") do
+      game.add_player(Player.new)
+      expect(game.empty?).to(eq(false))
+    end
+  end
 end
