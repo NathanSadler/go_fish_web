@@ -4,6 +4,7 @@ require 'sprockets'
 require 'sass'
 require 'pry'
 require_relative 'lib/game'
+require_relative 'lib/player'
 
 class Server < Sinatra::Base
   def self.game
@@ -44,6 +45,7 @@ class Server < Sinatra::Base
 
   get '/game' do
     redirect '/' if self.class.game.empty?
+    #binding.pry
     slim :game, locals: { game: self.class.game, current_player: session[:current_player] }
   end
 
