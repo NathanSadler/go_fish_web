@@ -1,2 +1,7 @@
 h1 Players
-p John
+- game.players.each do |player|
+  - if player.name == current_player.name
+    li
+      b = player.name
+  - else
+    li = player.name
