@@ -2,8 +2,13 @@ require 'sinatra'
 require 'sinatra/reloader'
 require 'sprockets'
 require 'sass'
+require_relative 'lib/game'
 
 class Server < Sinatra::Base
+  def self.game
+    @@game ||= Game.new
+  end
+
   configure :development do
     register Sinatra::Reloader
   end
