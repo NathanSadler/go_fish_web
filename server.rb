@@ -12,7 +12,7 @@ class Server < Sinatra::Base
   # initialize new sprockets environment
   set :environment, Sprockets::Environment.new
 
-  # append assets paths
+  # append assetls paths
   environment.append_path "assets/stylesheets"
   environment.append_path "assets/javascripts"
 

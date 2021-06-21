@@ -7,3 +7,9 @@ gem 'sprockets'
 gem 'sass'
 gem 'pry'
 gem 'shotgun'
+
+group :test do
+  gem 'rspec'
+  gem 'rack-test'
+  gem 'capybara'
+end
