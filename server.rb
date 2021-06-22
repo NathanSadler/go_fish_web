@@ -38,11 +38,19 @@ class Server < Sinatra::Base
     slim :index
   end
 
-
-  post '/waiting_room' do
+  post '/wait_to_start' do
     player = Player.new(params['name'])
     session[:current_player] = player
     self.class.game.add_player(player)
+    redirect('/wait_to_start')
+  end
+
+  get '/wait_to_start' do
+    slim :wait_to_start
+  end
+
+
+  post '/waiting_room' do
     redirect('/waiting_room')
   end
 
