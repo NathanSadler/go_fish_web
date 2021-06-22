@@ -24,36 +24,6 @@ describe "Game" do
     end
   end
 
-  context '.has_started?' do
-    it("is false if the game has not started yet") do
-      expect(game.has_started?).to(eq(false))
-    end
-  end
-
-  context '.set_started' do
-    it("sets the value of started to true if any truthy value is given") do
-      game.set_started("foobar")
-      expect(game.has_started?).to(eq(true))
-    end
-  end
-
-  context '.deal_cards' do
-    it("gives 7 cards to each player if there are 3 or fewer players") do
-      3.times {game.add_player(Player.new)}
-      game.deal_cards
-      (0..2).each {|index| expect(game.players[index].hand.length).to(eq(7))}
-      # Make sure they didn't somehow get the same cards, either
-      expect(game.players[0].hand == game.players[1].hand).to(eq(false))
-    end
-    it("gives 5 cards to each player if there are 4 or 5 players") do
-      5.times {game.add_player(Player.new)}
-      game.deal_cards
-      (0..2).each {|index| expect(game.players[index].hand.length).to(eq(5))}
-      # Make sure they didn't somehow get the same cards, either
-      expect(game.players[0].hand == game.players[1].hand).to(eq(false))
-    end
-  end
-
 
   context '.move_turn_pointer' do
     before(:each) do
@@ -79,14 +49,6 @@ describe "Game" do
         game.take_turn
         expect(game.active_player).to(eq(game.players[time]))
       end
-    end
-  end
-
-  context ".clear_players" do
-    it("removes all players from the game") do
-      3.times {game.add_player(Player.new)}
-      game.clear_players
-      expect(game.players).to(eq([]))
     end
   end
 

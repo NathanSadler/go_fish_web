@@ -36,7 +36,6 @@ RSpec.describe Server do
   end
 
   context 'multiple people joining a game' do
-
     before(:each) do
       [session1, session2].each_with_index do |session, index|
         player_name = "Player #{index + 1}"
@@ -65,7 +64,7 @@ RSpec.describe Server do
   end
 
   context "players pressing the 'try to take turn button'" do
-    it "links players to the take_turn page if it is there turn" do
+    it "links players to the take_turn page if it is their turn" do
       session1.click_on "Try to Take Turn"
       expect(session1).to have_content("Take Your Turn")
       session1.click_on "Take Turn"
@@ -86,11 +85,6 @@ RSpec.describe Server do
       test_session.click_on 'Join'
       test_session.click_on "Try to Take Turn"
       expect(test_session).to_not have_content("Take Your Turn")
-    end
-    it "deals cards to players if this is the first turn of the game" do
-      session1.click_on "Try to Take Turn"
-      binding.pry
-      expect(Server.game.players[0].empty_hand?).to(eq(false))
     end
   end
 

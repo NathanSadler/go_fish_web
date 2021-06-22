@@ -38,6 +38,7 @@ class Server < Sinatra::Base
     slim :index
   end
 
+
   post '/waiting_room' do
     player = Player.new(params['name'])
     session[:current_player] = player
@@ -54,10 +55,6 @@ class Server < Sinatra::Base
   get '/take_turn' do
     redirect '/waiting_room' if session[:current_player].id != self.class.game.active_player.id
     redirect '/waiting_room' if self.class.game.players.length < self.class.game.min_players
-    if (self.class.game.players.length >= self.class.game.min_players) && (!self.class.game.has_started?)
-      self.class.game.set_started(true)
-      self.class.game.deal_cards
-    end
     slim :take_turn
   end
 

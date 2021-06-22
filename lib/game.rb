@@ -7,7 +7,6 @@ class Game
     @min_players = min_players
     @move_pointer = nil
     @deck = Deck.new
-    @started = false
   end
 
   def add_player(player)
@@ -22,13 +21,6 @@ class Game
     move_turn_pointer
   end
 
-  def has_started?
-    started
-  end
-
-  def set_started(value)
-    @started = !!value
-  end
 
   def move_turn_pointer
     if !move_pointer.nil?
@@ -38,14 +30,6 @@ class Game
       end
     end
   end
-
-  def deal_cards
-    players.length > 3 ? (card_deal_count = 5) : (card_deal_count = 7)
-    card_deal_count.times do
-      players.each {|player| player.add_card_to_hand(deck.draw_card)}
-    end
-  end
-
 
   def empty?
     players.empty?
@@ -67,9 +51,4 @@ class Game
   def set_players(players_list)
     @players = players_list
   end
-
-  def started
-    return @started
-  end
-
 end
