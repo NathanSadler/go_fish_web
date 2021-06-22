@@ -50,4 +50,20 @@ RSpec.describe Server do
       expect(session1).to_not have_css('b', text: 'Player 2')
     end
   end
+
+  context 'players trying to take a turn' do
+    let(:session1) {Capybara::Session.new(:rack_test, Server.new)}
+    let(:session2) {Capybara::Session.new(:rack_test, Server.new)}
+
+    before(:each) do
+      [session1, session2].each_with_index do |session, index|
+        player_name = "Player #{index + 1}"
+        session.visit '/'
+        session.fill_in :name, with: player_name
+        session.click_on 'Join'
+      end
+    end
+
+    
+  end
 end
