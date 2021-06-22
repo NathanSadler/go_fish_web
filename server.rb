@@ -5,6 +5,8 @@ require 'sass'
 require 'pry'
 require_relative 'lib/game'
 require_relative 'lib/player'
+require_relative 'lib/deck'
+require_relative 'lib/card'
 
 class Server < Sinatra::Base
   def self.game
@@ -50,9 +52,8 @@ class Server < Sinatra::Base
 
   get '/take_turn' do
     redirect '/waiting_room' if session[:current_player].id != self.class.game.active_player.id
-    if self.class.game.players.length < self.class.game.min_players
-      redirect '/waiting_room'
-    end
+    redirect '/waiting_room' if self.class.game.players.length < self.class.game.min_players
+
     slim :take_turn
   end
 

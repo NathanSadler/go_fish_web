@@ -7,6 +7,7 @@ class Game
     @min_players = min_players
     @move_pointer = nil
     @deck = Deck.new
+    @started = false
   end
 
   def add_player(player)
@@ -19,6 +20,14 @@ class Game
   # TODO: finish this properly
   def take_turn
     move_turn_pointer
+  end
+
+  def has_started?
+    started
+  end
+
+  def set_started(value)
+    @started = !!value
   end
 
   def move_turn_pointer
@@ -57,6 +66,10 @@ class Game
 
   def set_players(players_list)
     @players = players_list
+  end
+
+  def started
+    return @started
   end
 
 end
