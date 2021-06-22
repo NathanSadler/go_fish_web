@@ -48,14 +48,6 @@ RSpec.describe Server do
   end
 
   context 'multiple people joining a game' do
-    # before(:each) do
-    #   [session1, session2].each_with_index do |session, index|
-    #     player_name = "Player #{index + 1}"
-    #     session.visit '/'
-    #     session.fill_in :name, with: player_name
-    #     session.click_on 'Join'
-    #   end
-    # end
     it 'displays a list with the name of each player' do
       expect(session2).to have_content('Player 1')
       expect(session2).to have_content('Player 2')
