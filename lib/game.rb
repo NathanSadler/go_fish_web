@@ -37,9 +37,17 @@ class Game
     players[move_pointer]
   end
 
+  def clear_players
+    set_players([])
+  end
+
   private
   def set_move_pointer(new_value)
     @move_pointer = new_value
+  end
+
+  def set_players(players_list)
+    @players = players_list
   end
 
 end

@@ -51,6 +51,14 @@ describe "Game" do
     end
   end
 
+  context ".clear_players" do
+    it("removes all players from the game") do
+      3.times {game.add_player(Player.new)}
+      game.clear_players
+      expect(game.players).to(eq([]))
+    end
+  end
+
   context '.empty?' do
     it("is true if there are no players in the game") do
       expect(game.empty?).to(eq(true))
