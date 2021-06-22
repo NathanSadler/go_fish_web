@@ -68,12 +68,13 @@ RSpec.describe Server do
     it "links players to the take_turn page if it is there turn" do
       session1.click_on "Try to Take Turn"
       expect(session1).to have_content("Take Your Turn")
-      Server.game.take_turn
+      session1.click_on "Take Turn"
       session2.click_on "Try to Take Turn"
       expect(session2).to have_content("Take Your Turn")
     end
     it "redirects players to the waiting_room page if it isn't their turn" do
-      Server.game.take_turn
+      session1.click_on "Try to Take Turn"
+      session1.click_on "Take Turn"
       session1.click_on "Try to Take Turn"
       expect(session1).to_not have_content("Take Your Turn")
     end

@@ -54,6 +54,12 @@ class Server < Sinatra::Base
     slim :take_turn
   end
 
+  # TODO: finish this
+  post '/make_guess' do
+    self.class.game.move_turn_pointer
+    redirect '/waiting_room'
+  end
+
   get '/:slug' do
     slim params[:slug].to_sym
   end
