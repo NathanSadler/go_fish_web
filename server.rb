@@ -48,6 +48,11 @@ class Server < Sinatra::Base
     slim :waiting_room, locals: { game: self.class.game, current_player: session[:current_player] }
   end
 
+  get '/take_turn' do
+    redirect '/waiting_room' if session[:current_player] != self.class.game.active_player 
+    slim :take_turn
+  end
+
   get '/:slug' do
     slim params[:slug].to_sym
   end

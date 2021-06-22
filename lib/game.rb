@@ -15,8 +15,9 @@ class Game
     players.append(player)
   end
 
-  def empty?
-    players.empty?
+  # TODO: finish this properly
+  def take_turn
+    move_turn_pointer
   end
 
   def move_turn_pointer
@@ -26,6 +27,10 @@ class Game
         set_move_pointer(0)
       end
     end
+  end
+
+  def empty?
+    players.empty?
   end
 
   def active_player

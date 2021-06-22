@@ -11,6 +11,17 @@ RSpec.describe Server do
   before do
     Capybara.app = Server.new
   end
+  let(:session1) {Capybara::Session.new(:rack_test, Server.new)}
+  let(:session2) {Capybara::Session.new(:rack_test, Server.new)}
+
+  before(:each) do
+    [session1, session2].each_with_index do |session, index|
+      player_name = "Player #{index + 1}"
+      session.visit '/'
+      session.fill_in :name, with: player_name
+      session.click_on 'Join'
+    end
+  end
 
   it 'is possible to join a game' do
     visit '/'
@@ -21,8 +32,6 @@ RSpec.describe Server do
   end
 
   context 'multiple people joining a game' do
-    let(:session1) {Capybara::Session.new(:rack_test, Server.new)}
-    let(:session2) {Capybara::Session.new(:rack_test, Server.new)}
 
     before(:each) do
       [session1, session2].each_with_index do |session, index|
@@ -51,19 +60,19 @@ RSpec.describe Server do
     end
   end
 
-  context 'players trying to take a turn' do
-    let(:session1) {Capybara::Session.new(:rack_test, Server.new)}
-    let(:session2) {Capybara::Session.new(:rack_test, Server.new)}
-
-    before(:each) do
-      [session1, session2].each_with_index do |session, index|
-        player_name = "Player #{index + 1}"
-        session.visit '/'
-        session.fill_in :name, with: player_name
-        session.click_on 'Join'
-      end
+  context "players pressing the 'try to take turn button'" do
+    it "links players to the take_turn page if it is there turn" do
+      session1.click_on "Try to Take Turn"
+      expect(session1).to have_content("Take Your Turn")
+      Server.game.take_turn
+      session2.click_on "Try to Take Turn"
+      expect(session2).to have_content("Take Your Turn")
     end
-
-    
+    it "redirects players to the waiting_room page if it isn't their turn" do
+      Server.game.take_turn
+      session1.click_on "Try to Take Turn"
+      expect(session1).to_not have_content("Take Your Turn")
+    end
   end
+
 end
