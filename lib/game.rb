@@ -1,11 +1,12 @@
 class Game
-  attr_reader :players, :max_players, :min_players, :move_pointer
+  attr_reader :players, :max_players, :min_players, :move_pointer, :deck
 
   def initialize(max_players = 7, min_players = 2)
     @players = []
     @max_players = max_players
     @min_players = min_players
     @move_pointer = nil
+    @deck = Deck.new
   end
 
   def add_player(player)
@@ -28,6 +29,14 @@ class Game
       end
     end
   end
+
+  def deal_cards
+    players.length > 3 ? (card_deal_count = 5) : (card_deal_count = 7)
+    card_deal_count.times do
+      players.each {|player| player.add_card_to_hand(deck.draw_card)}
+    end
+  end
+
 
   def empty?
     players.empty?

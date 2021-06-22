@@ -24,6 +24,24 @@ describe "Game" do
     end
   end
 
+context '.deal_cards' do
+  it("gives 7 cards to each player if there are 3 or fewer players") do
+    3.times {game.add_player(Player.new)}
+    game.deal_cards
+    (0..2).each {|index| expect(game.players[index].hand.length).to(eq(7))}
+    # Make sure they didn't somehow get the same cards, either
+    expect(game.players[0].hand == game.players[1].hand).to(eq(false))
+  end
+  it("gives 5 cards to each player if there are 4 or 5 players") do
+    5.times {game.add_player(Player.new)}
+    game.deal_cards
+    (0..2).each {|index| expect(game.players[index].hand.length).to(eq(5))}
+    # Make sure they didn't somehow get the same cards, either
+    expect(game.players[0].hand == game.players[1].hand).to(eq(false))
+  end
+end
+
+
   context '.move_turn_pointer' do
     before(:each) do
       [1, 2, 3].each {|time| game.add_player(Player.new("Player #{time}"))}
