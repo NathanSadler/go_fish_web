@@ -50,10 +50,14 @@ class Server < Sinatra::Base
     slim :waiting_room, locals: { game: self.class.game, current_player: session[:current_player] }
   end
 
+  # TODO: maybe break this up into multiple routes later
   get '/take_turn' do
     redirect '/waiting_room' if session[:current_player].id != self.class.game.active_player.id
     redirect '/waiting_room' if self.class.game.players.length < self.class.game.min_players
-
+    if (self.class.game.players.length >= self.class.game.min_players) && (!self.class.game.has_started?)
+      self.class.game.set_started(true)
+      self.class.game.deal_cards
+    end
     slim :take_turn
   end
 

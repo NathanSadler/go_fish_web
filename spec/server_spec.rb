@@ -89,6 +89,7 @@ RSpec.describe Server do
     end
     it "deals cards to players if this is the first turn of the game" do
       session1.click_on "Try to Take Turn"
+      binding.pry
       expect(Server.game.players[0].empty_hand?).to(eq(false))
     end
   end
