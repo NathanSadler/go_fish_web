@@ -49,8 +49,10 @@ class Server < Sinatra::Base
   end
 
   get '/take_turn' do
-    #binding.pry
     redirect '/waiting_room' if session[:current_player].id != self.class.game.active_player.id
+    if self.class.game.players.length < self.class.game.min_players
+      redirect '/waiting_room'
+    end
     slim :take_turn
   end
 

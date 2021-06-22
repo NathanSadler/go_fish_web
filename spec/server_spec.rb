@@ -78,6 +78,15 @@ RSpec.describe Server do
       session1.click_on "Try to Take Turn"
       expect(session1).to_not have_content("Take Your Turn")
     end
+    it "always redirects back to waiting_room if there aren't enough players" do
+      Server.game.clear_players
+      test_session = Capybara::Session.new(:rack_test, Server.new)
+      test_session.visit '/'
+      test_session.fill_in :name, with: "Test Name"
+      test_session.click_on 'Join'
+      test_session.click_on "Try to Take Turn"
+      expect(test_session).to_not have_content("Take Your Turn")
+    end
   end
 
 end
