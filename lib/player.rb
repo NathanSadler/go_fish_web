@@ -33,6 +33,10 @@ class Player
     hand.length
   end
 
+  def empty_hand?
+    card_count == 0
+  end
+
   def remove_cards_with_rank(rank)
     cards_to_remove = hand.select {|card| card.rank == rank}
     set_hand(self.hand - cards_to_remove)
