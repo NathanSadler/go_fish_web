@@ -2,6 +2,7 @@ require_relative '../lib/player'
 
 describe 'Player' do
   let(:player) {Player.new}
+
   context 'initialize' do
     it('creates a player with a specified name') do
       player = Player.new('John Doe')

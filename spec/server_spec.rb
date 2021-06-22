@@ -23,6 +23,10 @@ RSpec.describe Server do
     end
   end
 
+  after(:each) do
+    Server.game.clear_players
+  end
+
   it 'is possible to join a game' do
     visit '/'
     fill_in :name, with: 'John'
