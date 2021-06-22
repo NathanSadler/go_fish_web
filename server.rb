@@ -36,16 +36,16 @@ class Server < Sinatra::Base
     slim :index
   end
 
-  post '/join' do
+  post '/waiting_room' do
     player = Player.new(params['name'])
     session[:current_player] = player
     self.class.game.add_player(player)
-    redirect('/game')
+    redirect('/waiting_room')
   end
 
-  get '/game' do
+  get '/waiting_room' do
     redirect '/' if self.class.game.empty?
-    slim :game, locals: { game: self.class.game, current_player: session[:current_player] }
+    slim :waiting_room, locals: { game: self.class.game, current_player: session[:current_player] }
   end
 
   get '/:slug' do

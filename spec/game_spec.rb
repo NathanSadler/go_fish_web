@@ -38,8 +38,6 @@ describe "Game" do
       expect(game.active_player).to(eq(game.players[0]))
     end
 
-
-
   end
 
   context '.empty?' do
