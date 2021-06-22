@@ -39,14 +39,4 @@ describe 'Deck' do
     end
   end
 
-  context('.empty?') do
-    it("is true if the deck is empty") do
-      test_deck.cards.length.times {test_deck.draw_card}
-      expect(test_deck.empty?).to(eq(true))
-    end
-    it("is false if the deck isn't empty") do
-      expect(test_deck.empty?).to(eq(false))
-    end
-  end
-  
 end

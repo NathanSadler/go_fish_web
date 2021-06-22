@@ -17,7 +17,6 @@ class Player
     end
   end
 
-
   def self.player_count
     @@player_count
   end

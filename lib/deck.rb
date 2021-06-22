@@ -24,7 +24,4 @@ class Deck
     cards.shift
   end
 
-  def empty?
-    cards.empty?
-  end
 end

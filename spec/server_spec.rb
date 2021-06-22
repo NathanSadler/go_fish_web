@@ -38,6 +38,12 @@ RSpec.describe Server do
     end
   end
 
+  context("A user clicks the 'proceed to game' button") do
+    it("deals cards to all players in the game") do
+      expect(Server.game.players[0].hand.empty?).to(eq(false))
+    end
+  end
+
   it 'is possible to join a game' do
     visit '/'
     fill_in :name, with: 'John'
