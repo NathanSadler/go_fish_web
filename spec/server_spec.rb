@@ -40,8 +40,17 @@ RSpec.describe Server do
 
   context("A user clicks the 'proceed to game' button") do
     it("deals cards to all players in the game") do
-      #binding.pry
       [0,1].each { |player_number| expect(Server.game.players[player_number].hand.empty?).to(eq(false))}
+    end
+    it("redirects to itself and doesn't do anything else if there are fewer "+
+    "than the minimum number of players in the game") do
+      Server.reset_game
+      test_session = Capybara::Session.new(:rack_test, Server.new)
+      test_session.visit '/'
+      test_session.fill_in :name, with: "Test Player"
+      test_session.click_on 'Join'
+      test_session.click_on 'Proceed to Game'
+      expect(test_session).to have_content("Wait For Other Players")
     end
   end
 
