@@ -1,9 +1,12 @@
 class Player
-  attr_reader :name, :hand, :score
+  @@player_count = 0
+  attr_reader :name, :hand, :score, :id
   def initialize(name = "Player")
     @name = name
     @hand = []
     @score = 0
+    @id =  @@player_count
+    @@player_count += 1
   end
 
   def add_card_to_hand(card)
@@ -52,6 +55,14 @@ class Player
     else
       return nil
     end
+  end
+
+  def self.player_count
+    @@player_count
+  end
+
+  def self.set_player_count(new_count)
+    @@player_count = new_count
   end
 
   private
