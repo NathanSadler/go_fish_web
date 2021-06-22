@@ -1,11 +1,16 @@
 require_relative '../lib/deck'
 describe 'Deck' do
   let(:test_deck) {Deck.new}
+
   context('.initialize') do
     it("creates a deck of 52 cards") do
       expect(test_deck.cards.length).to(eq(52))
     end
+    it("has cards_dealt set to false on creation") do
+      expect(test_deck.cards_dealt?).to(eq(false))
+    end
   end
+
   context('#default_deck') do
     it("Returns an unshuffled array of all 52 standard cards") do
       default_deck = Deck.default_deck

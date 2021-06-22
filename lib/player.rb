@@ -11,9 +11,9 @@ class Player
 
   def add_card_to_hand(card)
     if(card.is_a?(Array))
-      hand.concat(card)
+      set_hand(hand.concat(card))
     else
-      hand.push(card)
+      set_hand(hand.push(card))
     end
   end
 
@@ -29,5 +29,6 @@ class Player
   def set_hand(new_hand)
     @hand = new_hand
   end
+
 
 end

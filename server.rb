@@ -13,6 +13,10 @@ class Server < Sinatra::Base
     @@game ||= Game.new
   end
 
+  def self.reset_game
+    @@game = nil
+  end
+
   configure :development do
     register Sinatra::Reloader
   end
@@ -49,20 +53,14 @@ class Server < Sinatra::Base
     slim :wait_to_start
   end
 
-
-  post '/waiting_room' do
-    redirect('/waiting_room')
-  end
-
   get '/waiting_room' do
-    redirect '/' if self.class.game.empty?
+    current_game = self.class.game
+    current_game.deal_cards if !current_game.deck.cards_dealt?
     slim :waiting_room, locals: { game: self.class.game, current_player: session[:current_player] }
   end
 
-  # TODO: maybe break this up into multiple routes later
   get '/take_turn' do
     redirect '/waiting_room' if session[:current_player].id != self.class.game.active_player.id
-    redirect '/waiting_room' if self.class.game.players.length < self.class.game.min_players
     slim :take_turn
   end
 

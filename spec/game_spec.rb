@@ -84,5 +84,10 @@ describe "Game" do
       # Make sure they didn't somehow get the same cards, either
       expect(game.players[0].hand == game.players[1].hand).to(eq(false))
     end
+    it("sets the deck's cards_dealt variable to true") do
+      3.times {game.add_player(Player.new)}
+      game.deal_cards
+      expect(game.deck.cards_dealt?).to(eq(true))
+    end
   end
 end

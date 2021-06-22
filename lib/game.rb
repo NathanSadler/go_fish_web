@@ -1,5 +1,6 @@
 class Game
-  attr_reader :players, :max_players, :min_players, :move_pointer, :deck
+  attr_reader :max_players, :min_players, :move_pointer, :deck
+  attr_accessor :players
 
   def initialize(max_players = 7, min_players = 2)
     @players = []
@@ -26,6 +27,7 @@ class Game
     card_deal_count.times do
       players.each {|player| player.add_card_to_hand(deck.draw_card)}
     end
+    deck.cards_dealt(true)
   end
 
   def move_turn_pointer
@@ -50,11 +52,13 @@ class Game
   end
 
   private
-  def set_move_pointer(new_value)
-    @move_pointer = new_value
-  end
+    def set_move_pointer(new_value)
+      @move_pointer = new_value
+    end
 
-  def set_players(players_list)
-    @players = players_list
-  end
+    def set_players(players_list)
+      @players = players_list
+    end
+
+    attr_writer :deck
 end

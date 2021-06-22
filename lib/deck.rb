@@ -4,6 +4,7 @@ class Deck
   attr_reader :cards
   def initialize(specified_cards=Deck.default_deck)
     @cards = specified_cards
+    @cards_dealt = false
   end
 
   def self.default_deck
@@ -14,6 +15,14 @@ class Deck
       suits.each {|suit| card_list.push(Card.new(rank, suit))}
     end
     card_list
+  end
+
+  def cards_dealt?
+    @cards_dealt
+  end
+
+  def cards_dealt(value)
+    @cards_dealt = value
   end
 
   def shuffle

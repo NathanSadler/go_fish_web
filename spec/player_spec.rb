@@ -13,22 +13,6 @@ describe 'Player' do
       player = Player.new
       expect(player.name).to(eq('Player'))
     end
-    it("starts the player without any cards") do
-      expect(player.hand).to(eq([]))
-    end
-    it("starts the player with a score of 0") do
-      expect(player.score).to(eq(0))
-    end
-    it("uses the player count as the ID") do
-      Player.set_player_count(0)
-      player = Player.new
-      expect(player.id).to(eq(0))
-    end
-    it("increments player_count after creating the player") do
-      Player.set_player_count(0)
-      player = Player.new
-      expect(Player.player_count).to(eq(1))
-    end
   end
 
   context('#set_player_count') do

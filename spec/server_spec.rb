@@ -8,7 +8,7 @@ require_relative '../server'
 RSpec.describe Server do
   # include Rack::Test::Methods
   include Capybara::DSL
-  before do
+  before(:all) do
     Capybara.app = Server.new
   end
   let(:session1) {Capybara::Session.new(:rack_test, Server.new)}
@@ -25,7 +25,7 @@ RSpec.describe Server do
   end
 
   after(:each) do
-    Server.game.clear_players
+    Server.reset_game
   end
 
   context('user enters their name and waits for the game to start') do
@@ -40,7 +40,8 @@ RSpec.describe Server do
 
   context("A user clicks the 'proceed to game' button") do
     it("deals cards to all players in the game") do
-      expect(Server.game.players[0].hand.empty?).to(eq(false))
+      #binding.pry
+      [0,1].each { |player_number| expect(Server.game.players[player_number].hand.empty?).to(eq(false))}
     end
   end
 
