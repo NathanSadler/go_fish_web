@@ -87,6 +87,10 @@ RSpec.describe Server do
       test_session.click_on "Try to Take Turn"
       expect(test_session).to_not have_content("Take Your Turn")
     end
+    it "deals cards to players if this is the first turn of the game" do
+      session1.click_on "Try to Take Turn"
+      #expect(Server.game.players[0].hand.length > 0).to(eq(true))
+    end
   end
 
 end

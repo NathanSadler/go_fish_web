@@ -29,6 +29,10 @@ class Player
     occurences.keys.select {|rank| occurences[rank] == 4}
   end
 
+  def card_count
+    hand.length
+  end
+
   def remove_cards_with_rank(rank)
     cards_to_remove = hand.select {|card| card.rank == rank}
     set_hand(self.hand - cards_to_remove)

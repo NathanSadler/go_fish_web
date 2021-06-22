@@ -1,4 +1,5 @@
 require_relative '../lib/player'
+require_relative '../lib/card'
 
 describe 'Player' do
   let(:player) {Player.new}
@@ -121,6 +122,23 @@ describe 'Player' do
       cards = [Card.new("7", "H"), Card.new("9", "S")]
       removed_cards = player.remove_cards_with_rank("2")
       expect(removed_cards).to(eq([]))
+    end
+  end
+
+  context('.empty_hand?') do
+    it("is true if the player doesn't have any cards in their hand") do
+      expect(player.empty_hand?).to(eq(true))
+    end
+    it("is false if the player does have cards in their hand") do
+      player.add_card_to_hand(Card.new("4", "D"))
+      expect(player.empty_hand?).to(eq(false))
+    end
+  end
+
+  context('.card_count') do
+    it("returns the number of cards the player has in their hand") do
+      %w[3 4 5].each {|time| player.add_card_to_hand(Card.new(time, "D"))}
+      expect(player.card_count).to(eq(3))
     end
   end
 
