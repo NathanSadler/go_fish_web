@@ -131,6 +131,14 @@ RSpec.describe Server do
       session1.click_on("Ok")
       expect(session1).to(have_content("Try to Take Turn"))
     end
+    it("does not increment_turn_counter if the player makes a correct guess") do
+      take_turn(session1, "3 of Diamonds", "Player 2")
+      expect(Server.game.turn_player).to(eq(Server.game.players[0]))
+    end
+    it("increments turn_counter if the player makes an incorrect guess") do
+      take_turn(session1, "2 of Diamonds", "Player 2")
+      expect(Server.game.turn_player).to(eq(Server.game.players[1]))
+    end
   end
 
   it 'is possible to join a game' do
