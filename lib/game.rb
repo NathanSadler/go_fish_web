@@ -1,6 +1,6 @@
 class Game
-#   attr_reader :max_players, :min_players, :move_pointer, :deck
-#   attr_accessor :players
+  attr_reader :max_players, :min_players, :move_pointer, :deck
+  attr_accessor :players
 #
   def initialize(max_players = 7, min_players = 2)
     @players = []
@@ -10,12 +10,12 @@ class Game
     @deck = Deck.new
   end
 #
-#   def add_player(player)
-#     if players.length == 0
-#       set_move_pointer(0)
-#     end
-#     players.append(player)
-#   end
+  def add_player(player)
+    if players.length == 0
+      set_move_pointer(0)
+    end
+    players.append(player)
+  end
 #
 #   # TODO: finish this properly
 #   def take_turn
