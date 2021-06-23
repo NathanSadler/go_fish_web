@@ -3,8 +3,8 @@ require 'rspec'
 require 'capybara'
 require 'capybara/dsl'
 ENV['RACK_ENV'] = 'test'
+require_relative '../server'
 require_relative '../lib/card'
-require_relative '../lib/server'
 require_relative '../lib/player'
 
 # Selects a card and player from take_turn.slim and clicks the Take Turn button.
