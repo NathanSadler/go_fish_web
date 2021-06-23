@@ -144,16 +144,6 @@ RSpec.describe Server do
     end
   end
 
-  it 'is possible to join a game' do
-    Server.reset_game
-    test_session = Capybara::Session.new(:rack_test, Server.new)
-    test_session.visit '/'
-    test_session.fill_in :name, with: 'John'
-    test_session.click_on 'Join'
-    test_session.click_on 'Proceed to Game'
-    expect(test_session).to have_content('John')
-  end
-
   context 'turn results page' do
     before(:each) do
       session1.click_on("Try to Take Turn")
