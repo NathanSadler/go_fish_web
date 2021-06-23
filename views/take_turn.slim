@@ -2,7 +2,11 @@ h1 Take Your Turn
 form action="make_guess" method="POST"
   p Select a card that has the rank you want to ask for
   - game.turn_player.hand.each do |card|
-    input type="radio" id="a" name="card" value="a" \
-    label for="a" = card.description
+    input type="radio" id="#{card.rank}-#{card.suit}" name="card" value="#{card.rank}-#{card.suit}" \
+    label for="#{card.rank}-#{card.suit}" = card.description
+  p Select the player to ask from
+  - (game.players.reject {|player| player == game.turn_player}).each do |player|
+    input type="radio" id="#{player.name}" name="player" value="#{player.name}" \
+    label for="#{player.name}" = player.name
 
   button type="submit" Take Turn

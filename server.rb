@@ -46,7 +46,6 @@ class Server < Sinatra::Base
     player = Player.new(params['name'])
     session[:current_player] = player
     self.class.game.add_player(player)
-    player.add_card_to_hand(Card.new("7", "H"))
     redirect('/wait_to_start')
   end
 
@@ -69,7 +68,7 @@ class Server < Sinatra::Base
   # TODO: finish this
   post '/make_guess' do
     # self.class.game.move_turn_pointer
-    # redirect '/waiting_room'
+    redirect '/waiting_room'
   end
 
   get '/:slug' do

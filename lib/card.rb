@@ -12,4 +12,8 @@ class Card
     rank_description = letter_ranks.fetch(rank, rank)
     "#{rank_description} of #{suits[suit]}"
   end
+
+  def ==(other_card)
+    self.rank == other_card.rank && self.suit && other_card.suit
+  end
 end

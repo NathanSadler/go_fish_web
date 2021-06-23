@@ -66,15 +66,15 @@ RSpec.describe Server do
   context("the take_turn page") do
     before(:each) do
       Server.game.players[0].set_hand([Card.new("2", "D"), Card.new("3", "D"), Card.new("K", "S")])
+      Server.game.players[1].set_hand([Card.new("3", "S")])
       session1.click_on "Try to Take Turn"
     end
     it("displays the cards in the player's hand") do
-      binding.pry
-      expect(session1).to_not have_content("Internal Server")
-      #binding.pry
       expect(session1).to have_content("2 of Diamonds")
-      expect(session1).to have_content("3 of Diamonds")
-      expect(session1).to have_content("King of Spades")
+      take_turn(session1, "2 of Diamonds", "Player 2")
+      session1.click_on("Ok")
+      session2.click_on "Try to Take Turn"
+      expect(session2).to(have_content("3 of Spades"))
     end
     it("lets users select a card") do
       expect {session1.click_on("2 of Diamonds")}.to_not raise_error
@@ -103,8 +103,13 @@ RSpec.describe Server do
     end
     it("allows users to ask for/get a card from another player") do
       session1.choose("3 of Diamonds")
+      session1.take_turn("3 of Diamonds")
       session1.click_on("Take Turn")
       expect(Server.game.players[0].has_card?(Card.new("3", "S"))).to(eq(true))
+    end
+    it("directs players to a turn_result page") do
+      take_turn(session1, "3 of Diamonds", "Player 2")
+      expect(session1).to(have_content("Turn Results"))
     end
     it("has the user draw from the deck if the player they ask don't have "+
     "cards of the specified rank") do
@@ -136,6 +141,23 @@ RSpec.describe Server do
     test_session.click_on 'Join'
     test_session.click_on 'Proceed to Game'
     expect(test_session).to have_content('John')
+  end
+
+  context 'turn results page' do
+    before(:each) do
+      session1.click_on("Try to Take Turn")
+    end
+    it 'has a button that takes user back to waiting page' do
+      take_turn(session1, "Jack of Spades", "Player 2")
+      click_on("Ok")
+      expect(session1).to(have_content("Try to Take Turn"))
+    end
+    it ('has a button that takes the user back to the take_turn page, when '+
+    'needed') do
+      take_turn(session1, "3 of Diamonds", "Player 2")
+      click_on("Ok")
+      expect(session1).to(have_content("Take Your Turn"))
+    end
   end
 
   context 'multiple people joining a game' do
