@@ -80,7 +80,7 @@ RSpec.describe Server do
       expect(session2).to(have_content("3 of Spades"))
     end
     it("lets users select a card") do
-      expect {session1.click_on("2 of Diamonds")}.to_not raise_error
+      expect {session1.choose("2 of Diamonds")}.to_not raise_error
     end
     it("doesn't display cards not in the player's hand") do
       expect(session1).to_not have_content("10 of Hearts")
