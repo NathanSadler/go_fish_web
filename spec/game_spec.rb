@@ -95,4 +95,18 @@ describe "Game" do
       expect(game.turn_player).to(eq(game.players[0]))
     end
   end
+
+  context '#increment_turn_counter' do
+    before(:each) do
+      2.times {game.add_player(Player.new("Test Player"))}
+    end
+    it "increases the turn counter by 1" do
+      game.increment_turn_counter
+      expect(game.turn_player).to(eq(game.players[1]))
+    end
+    it "goes back to zero if it reaches the last player" do
+      2.times {game.increment_turn_counter}
+      expect(game.turn_player).to(eq(game.players[0]))
+    end
+  end
 end

@@ -28,4 +28,17 @@ class Game
     deck.cards_dealt(true)
   end
 
+  def increment_turn_counter
+    if turn_counter == players.length - 1
+      set_turn_counter(0)
+    else
+      set_turn_counter(turn_counter + 1)
+    end
+  end
+
+  private
+    def set_turn_counter(new_value)
+      @turn_counter = new_value
+    end
+
 end

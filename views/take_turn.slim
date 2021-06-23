@@ -1,9 +1,7 @@
 h1 Take Your Turn
 form action="make_guess" method="POST"
   p Select a card that has the rank you want to ask for
-  p
-    = current_player.hand.length
-  - game[turn_counter].hand.each do |card|
+  - game.turn_player.hand.each do |card|
     input type="radio" id="a" name="card" value="a" \
     label for="a" = card.description
 
