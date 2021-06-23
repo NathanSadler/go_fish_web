@@ -51,6 +51,9 @@ RSpec.describe Server do
     it("deals cards to all players in the game") do
       [0,1].each { |player_number| expect(Server.game.players[player_number].hand.empty?).to(eq(false))}
     end
+    it("doesn't deal cards for the same game multiple times") do
+      Server.game.deck
+    end
     it("redirects to itself and doesn't do anything else if there are fewer "+
     "than the minimum number of players in the game") do
       Server.reset_game
