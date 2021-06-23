@@ -25,7 +25,7 @@ class Game
     card_deal_count.times do
       players.each {|player| player.add_card_to_hand(deck.draw_card)}
     end
-    set_cards_dealt(true)
+    deck.set_cards_dealt(true)
   end
 
   def increment_turn_counter
@@ -35,10 +35,6 @@ class Game
   private
     def set_turn_counter(new_value)
       @turn_counter = new_value % players.length
-    end
-
-    def set_cards_dealt(value)
-      @cards_dealt = value
     end
 
 end

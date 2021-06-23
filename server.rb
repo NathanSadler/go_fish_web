@@ -68,8 +68,13 @@ class Server < Sinatra::Base
 
   # TODO: finish this
   post '/make_guess' do
-    # self.class.game.move_turn_pointer
-    redirect '/waiting_room'
+    self.class.game.increment_turn_counter
+    # TODO: stuff here later
+    redirect '/turn_results'
+  end
+
+  get '/turn_results' do
+    slim :turn_results
   end
 
   get '/:slug' do
