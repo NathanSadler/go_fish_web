@@ -74,12 +74,34 @@ RSpec.describe Server do
   end
 
   context 'asking for cards from another player' do
-    it("allows users to ask for/get a card from another player") do
+    before(:each) do
       session1.click_on "Try to Take Turn"
-      session1.choose("3 of Diamonds")
       session1.choose("Player 2")
+    end
+    it("allows users to ask for/get a card from another player") do
+      session1.choose("3 of Diamonds")
       session1.click_on("Take Turn")
       expect(Server.game.players[0].has_card?(Card.new("3", "S"))).to(eq(true))
+    end
+    it("has the user draw from the deck if the player they ask don't have "+
+    "cards of the specified rank") do
+      session1.choose("2 of Diamonds")
+      session1.click_on("Take Turn")
+      expect(Server.game.players[0].has_card?(Card.new("7", "H")))
+    end
+    it("lets the user go again if the other player has a card of the rank they "+
+    "want") do
+      session1.choose("3 of Diamonds")
+      session1.click_on("Take Turn")
+      session1.click_on("Ok")
+      expect(session1).to(have_content("Take Your Turn"))
+    end
+    it("doesn't let the user go again if the other player doesn't have a card "+
+    "of the rank they ask for") do
+      session1.choose("2 of Diamonds")
+      session1.click_on("Take Turn")
+      session1.click_on("Ok")
+      expect(session1).to(have_content("Try to Take Turn"))
     end
   end
 
