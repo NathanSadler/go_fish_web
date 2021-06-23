@@ -1,14 +1,14 @@
-# class Game
+class Game
 #   attr_reader :max_players, :min_players, :move_pointer, :deck
 #   attr_accessor :players
 #
-#   def initialize(max_players = 7, min_players = 2)
-#     @players = []
-#     @max_players = max_players
-#     @min_players = min_players
-#     @move_pointer = nil
-#     @deck = Deck.new
-#   end
+  def initialize(max_players = 7, min_players = 2)
+    @players = []
+    @max_players = max_players
+    @min_players = min_players
+    @move_pointer = nil
+    @deck = Deck.new
+  end
 #
 #   def add_player(player)
 #     if players.length == 0
@@ -61,4 +61,4 @@
 #     end
 #
 #     attr_writer :deck
-# end
+end

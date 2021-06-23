@@ -1,13 +1,13 @@
-# class Player
-#   @@player_count = 0
-#   attr_reader :name, :hand, :score, :id
-#   def initialize(name = "Player")
-#     @name = name
-#     @hand = []
-#     @score = 0
-#     @id =  @@player_count
-#     @@player_count += 1
-#   end
+class Player
+  # @@player_count = 0
+  attr_reader :name, :hand
+  def initialize(name = "Player")
+    @name = name
+    @hand = []
+    @score = 0
+    @id =  @@player_count
+    # @@player_count += 1
+  end
 #
 #   def add_card_to_hand(card)
 #     if(card.is_a?(Array))
@@ -31,4 +31,4 @@
 #   end
 #
 #
-# end
+end
