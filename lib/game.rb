@@ -29,16 +29,12 @@ class Game
   end
 
   def increment_turn_counter
-    if turn_counter == players.length - 1
-      set_turn_counter(0)
-    else
-      set_turn_counter(turn_counter + 1)
-    end
+    set_turn_counter(turn_counter + 1)
   end
 
   private
     def set_turn_counter(new_value)
-      @turn_counter = new_value
+      @turn_counter = new_value % players.length
     end
 
 end
