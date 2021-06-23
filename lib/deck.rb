@@ -1,6 +1,6 @@
 # require_relative 'card'
 #
-# class Deck
+class Deck
 #   attr_reader :cards
 #   def initialize(specified_cards=Deck.default_deck)
 #     @cards = specified_cards
@@ -33,4 +33,4 @@
 #     cards.shift
 #   end
 #
-# end
+end
