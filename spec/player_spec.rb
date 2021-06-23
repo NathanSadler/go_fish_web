@@ -15,6 +15,19 @@ describe 'Player' do
     end
   end
 
+  context('.set_hand') do
+    let(:card_list) {[Card.new("4", "H"), Card.new("7", "D")]}
+    it("sets the hand of the player") do
+      player.set_hand(card_list)
+      expect(player.hand).to(eq(card_list))
+    end
+    it("does not just add cards to the players hand") do
+      player.add_card_to_hand(Card.new("8", "S"))
+      player.set_hand(card_list)
+      expect(player.hand).to(eq(card_list))
+    end
+  end
+
   context('#set_player_count') do
     it("sets the player_count variable") do
       Player.set_player_count(999)

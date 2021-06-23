@@ -16,6 +16,10 @@ class Player
       set_hand(hand.push(card))
     end
   end
+
+  def set_hand(new_hand)
+    @hand = new_hand
+  end
 #
 #   def self.player_count
 #     @@player_count
@@ -23,11 +27,6 @@ class Player
 #
 #   def self.set_player_count(new_count)
 #     @@player_count = new_count
-#   end
-#
-#   private
-#   def set_hand(new_hand)
-#     @hand = new_hand
 #   end
 #
 #
