@@ -62,14 +62,14 @@ class Server < Sinatra::Base
   end
 
   get '/take_turn' do
-    redirect '/waiting_room' if session[:current_player].id != self.class.game.active_player.id
+    # redirect '/waiting_room' if session[:current_player].id != self.class.game.active_player.id
     slim :take_turn
   end
 
   # TODO: finish this
   post '/make_guess' do
-    self.class.game.move_turn_pointer
-    redirect '/waiting_room'
+    # self.class.game.move_turn_pointer
+    # redirect '/waiting_room'
   end
 
   get '/:slug' do
