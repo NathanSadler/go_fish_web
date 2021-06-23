@@ -46,8 +46,7 @@ class Server < Sinatra::Base
     player = Player.new(params['name'])
     session[:current_player] = player
     self.class.game.add_player(player)
-    # print(player.name)
-    #binding.pry
+    player.add_card_to_hand(Card.new("7", "H"))
     redirect('/wait_to_start')
   end
 
@@ -56,7 +55,6 @@ class Server < Sinatra::Base
   end
 
   get '/waiting_room' do
-    current_game = self.class.game
     # current_game.deal_cards if !current_game.deck.cards_dealt?
     # redirect('/wait_to_start') if current_game.players.length < current_game.min_players
     slim :waiting_room, locals: { game: self.class.game, current_player: session[:current_player] }
@@ -65,7 +63,7 @@ class Server < Sinatra::Base
 
   get '/take_turn' do
     # redirect '/waiting_room' if session[:current_player].id != self.class.game.active_player.id
-    slim :take_turn, locals: {current_player: session[:current_player]}
+    slim :take_turn, locals: {game: self.class.game, current_player: session[:current_player]}
   end
 
   # TODO: finish this

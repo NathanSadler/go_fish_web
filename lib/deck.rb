@@ -16,21 +16,6 @@ class Deck
     end
     card_list
   end
-#
-  def cards_dealt?
-    @cards_dealt
-  end
-#
-#   def cards_dealt(value)
-#     @cards_dealt = value
-#   end
-#
-#   def shuffle
-#     cards.shuffle!
-#   end
-#
-#   def draw_card
-#     cards.shift
-#   end
-#
+
+
 end

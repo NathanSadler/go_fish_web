@@ -65,18 +65,18 @@ RSpec.describe Server do
 
   context("the take_turn page") do
     before(:each) do
-      # print(session1)
       Server.game.players[0].set_hand([Card.new("2", "D"), Card.new("3", "D"), Card.new("K", "S")])
       session1.click_on "Try to Take Turn"
     end
     it("displays the cards in the player's hand") do
+      binding.pry
       expect(session1).to_not have_content("Internal Server")
+      #binding.pry
       expect(session1).to have_content("2 of Diamonds")
       expect(session1).to have_content("3 of Diamonds")
       expect(session1).to have_content("King of Spades")
     end
     it("lets users select a card") do
-      save_and_open_page
       expect {session1.click_on("2 of Diamonds")}.to_not raise_error
     end
     it("doesn't display cards not in the player's hand") do

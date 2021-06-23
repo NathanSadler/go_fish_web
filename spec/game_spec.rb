@@ -90,4 +90,9 @@ describe "Game" do
       expect(game.deck.cards_dealt?).to(eq(true))
     end
   end
+  context '#turn_player' do
+    it "returns the player whose turn it is" do
+      expect(game.turn_player).to(eq(game.players[0]))
+    end
+  end
 end
