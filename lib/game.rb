@@ -1,3 +1,4 @@
+require_relative 'deck'
 class Game
   attr_reader :max_players, :min_players, :move_pointer, :deck
   attr_accessor :players
@@ -11,10 +12,11 @@ class Game
   end
 #
   def add_player(player)
-    if players.length == 0
-      set_move_pointer(0)
-    end
+    # if players.length == 0
+    #   set_move_pointer(0)
+    # end
     players.append(player)
+    # print(players)
   end
 #
 #   # TODO: finish this properly
@@ -22,13 +24,13 @@ class Game
 #     move_turn_pointer
 #   end
 #
-#   def deal_cards
-#     players.length > 3 ? (card_deal_count = 5) : (card_deal_count = 7)
-#     card_deal_count.times do
-#       players.each {|player| player.add_card_to_hand(deck.draw_card)}
-#     end
-#     deck.cards_dealt(true)
-#   end
+  def deal_cards
+    players.length > 3 ? (card_deal_count = 5) : (card_deal_count = 7)
+    card_deal_count.times do
+      players.each {|player| player.add_card_to_hand(deck.draw_card)}
+    end
+    deck.cards_dealt(true)
+  end
 #
 #   def move_turn_pointer
 #     if !move_pointer.nil?

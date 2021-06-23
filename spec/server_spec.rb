@@ -119,12 +119,13 @@ RSpec.describe Server do
   end
 
   it 'is possible to join a game' do
-    visit '/'
-    fill_in :name, with: 'John'
-    click_on 'Join'
-    click_on 'Proceed to Game'
-    expect(page).to have_content('Players')
-    expect(page).to have_content('John')
+    Server.reset_game
+    test_session = Capybara::Session.new(:rack_test, Server.new)
+    test_session.visit '/'
+    test_session.fill_in :name, with: 'John'
+    test_session.click_on 'Join'
+    test_session.click_on 'Proceed to Game'
+    expect(test_session).to have_content('John')
   end
 
   context 'multiple people joining a game' do

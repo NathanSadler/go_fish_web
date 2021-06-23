@@ -5,17 +5,17 @@ class Player
     @name = name
     @hand = []
     @score = 0
-    @id =  @@player_count
+    # @id =  @@player_count
     # @@player_count += 1
   end
 #
-#   def add_card_to_hand(card)
-#     if(card.is_a?(Array))
-#       set_hand(hand.concat(card))
-#     else
-#       set_hand(hand.push(card))
-#     end
-#   end
+  def add_card_to_hand(card)
+    if(card.is_a?(Array))
+      set_hand(hand.concat(card))
+    else
+      set_hand(hand.push(card))
+    end
+  end
 #
 #   def self.player_count
 #     @@player_count
