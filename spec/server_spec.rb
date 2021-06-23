@@ -7,6 +7,13 @@ require_relative '../card'
 require_relative '../server'
 require_relative '../player'
 
+# Selects a card and player from take_turn.slim and clicks the Take Turn button.
+def take_turn(session, card, player)
+  session.choose(card)
+  session.choose(player)
+  session.click_on("Take Turn")
+end
+
 RSpec.describe Server do
   # include Rack::Test::Methods
   include Capybara::DSL
@@ -57,19 +64,25 @@ RSpec.describe Server do
   end
 
   context("the take_turn page") do
-    it("displays the cards in the player's hand") do
+    before(:each) do
       session1.click_on "Try to Take Turn"
+    end
+    it("displays the cards in the player's hand") do
       expect(session1).to have_content("2 of Diamonds")
       expect(session1).to have_content("3 of Diamonds")
       expect(session1).to have_content("King of Spades")
     end
     it("displays the other players") do
-      session1.click_on "Try to Take Turn"
       expect(session1).to have_content("Player 2")
     end
     it("does not display the player using the page") do
-      session1.click_on "Try to Take Turn"
       expect(session1).to_not have_content("Player 1")
+    end
+    it("displays information about the previous turn") do
+      take_turn(session1, "2 of Diamonds", "Player 2")
+      session1.click_on("Ok")
+      session2.click_on("Try to Take Turn")
+      expect(session2).to(have_content("Player 1 asked Player 2 for a 2 of Diamonds"))
     end
   end
 
