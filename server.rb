@@ -65,7 +65,7 @@ class Server < Sinatra::Base
 
   get '/take_turn' do
     # redirect '/waiting_room' if session[:current_player].id != self.class.game.active_player.id
-    slim :take_turn
+    slim :take_turn, locals: {current_player: session[:current_player]}
   end
 
   # TODO: finish this
