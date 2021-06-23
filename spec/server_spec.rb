@@ -3,7 +3,9 @@ require 'rspec'
 require 'capybara'
 require 'capybara/dsl'
 ENV['RACK_ENV'] = 'test'
+require_relative '../card'
 require_relative '../server'
+require_relative '../player'
 
 RSpec.describe Server do
   # include Rack::Test::Methods
@@ -51,6 +53,33 @@ RSpec.describe Server do
       test_session.click_on 'Join'
       test_session.click_on 'Proceed to Game'
       expect(test_session).to have_content("Wait For Other Players")
+    end
+  end
+
+  context("the take_turn page") do
+    it("displays the cards in the player's hand") do
+      session1.click_on "Try to Take Turn"
+      expect(session1).to have_content("2 of Diamonds")
+      expect(session1).to have_content("3 of Diamonds")
+      expect(session1).to have_content("King of Spades")
+    end
+    it("displays the other players") do
+      session1.click_on "Try to Take Turn"
+      expect(session1).to have_content("Player 2")
+    end
+    it("does not display the player using the page") do
+      session1.click_on "Try to Take Turn"
+      expect(session1).to_not have_content("Player 1")
+    end
+  end
+
+  context 'asking for cards from another player' do
+    it("allows users to ask for/get a card from another player") do
+      session1.click_on "Try to Take Turn"
+      session1.choose("3 of Diamonds")
+      session1.choose("Player 2")
+      session1.click_on("Take Turn")
+      expect(Server.game.players[0].has_card?(Card.new("3", "S"))).to(eq(true))
     end
   end
 
