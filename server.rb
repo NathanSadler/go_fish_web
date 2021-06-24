@@ -69,7 +69,7 @@ class Server < Sinatra::Base
   # TODO: finish this
   post '/make_guess' do
     self.class.game.increment_turn_counter
-    #print(params)
+    print(params)
     # TODO: stuff here later
     redirect '/turn_results'
   end

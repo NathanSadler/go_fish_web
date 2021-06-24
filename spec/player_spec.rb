@@ -2,16 +2,50 @@ require_relative '../lib/player'
 require_relative '../lib/card'
 
 describe 'Player' do
-  let(:player) {Player.new}
+  let!(:player) {Player.new}
+
+  after(:each) do
+    Player.clear_players
+  end
 
   context 'initialize' do
+    it("increments the player count by one") do
+      expect(Player.player_count).to(eq(1))
+    end
+    it("adds a player to a hash of players") do
+      expect(Player.player_hash.empty?).to(eq(false))
+    end
+    it("uses the player_count as its ID") do
+      test_player = Player.new
+      expect(test_player.id).to(eq(1))
+    end
     it('creates a player with a specified name') do
       player = Player.new('John Doe')
       expect(player.name).to(eq('John Doe'))
     end
     it("defaults to the player name 'Player' if no name is specified") do
-      player = Player.new
       expect(player.name).to(eq('Player'))
+    end
+  end
+
+  context('#get_player_by_id') do
+    it("returns the player with the given ID") do
+      player1 = Player.new("Player 1")
+      player2 = Player.new("Player 2")
+      expect(Player.get_player_by_id(2)).to(eq(player2))
+    end
+  end
+
+  context('#clear_players') do
+    it("resets the player count to 0") do
+      2.times {test_player = Player.new}
+      Player.clear_players
+      expect(Player.player_count).to(eq(0))
+    end
+    it("clears the player_hash") do
+      2.times {test_player = Player.new}
+      Player.clear_players
+      expect(Player.player_hash.empty?).to(eq(true))
     end
   end
 

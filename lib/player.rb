@@ -1,9 +1,13 @@
 class Player
-  attr_reader :name, :hand
+  @@player_count = 0
+  @@player_hash = {}
+  attr_reader :name, :hand, :id
   def initialize(name = "Player")
     @name = name
     @hand = []
-    @score = 0
+    @id = @@player_count
+    @@player_count += 1
+    @@player_hash.store(@id, self)
   end
 
   def add_card_to_hand(card)
@@ -14,8 +18,33 @@ class Player
     end
   end
 
+  def self.player_count
+    @@player_count
+  end
+
+  def self.player_hash
+    @@player_hash
+  end
+
+  def self.clear_players
+    Player.set_player_count(0)
+    Player.set_player_hash({})
+  end
+
+  def self.set_player_count(new_count)
+    @@player_count = new_count
+  end
+
+  def self.set_player_hash(new_hash)
+    @@player_hash = new_hash
+  end
+
   def has_card?(card)
     hand.include?(card)
+  end
+
+  def self.get_player_by_id(id)
+    @@player_hash[id]
   end
 
   def set_hand(new_hand)
