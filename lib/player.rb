@@ -51,6 +51,12 @@ class Player
     @hand = new_hand
   end
 
+  def remove_cards_with_rank(rank)
+    cards_to_remove = hand.select {|card| card.rank == rank}
+    set_hand(self.hand - cards_to_remove)
+    cards_to_remove
+  end
+
   def remove_card_from_hand(card)
     if self.hand.include?(card)
       set_hand(self.hand.reject {|hand_card| hand_card == card})

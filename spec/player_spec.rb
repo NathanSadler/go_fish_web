@@ -113,5 +113,22 @@ describe 'Player' do
     end
   end
 
+  context('#remove_cards_with_rank') do
+    it('returns and removes all cards with a specified rank') do
+      cards = [Card.new( "8",  "S"), Card.new( "8", "D"),
+        Card.new( "4",  "H")]
+      player.add_card_to_hand(cards)
+      removed_cards = player.remove_cards_with_rank("8")
+      expect(player.hand).to(eq([Card.new( "4",  "H")]))
+      expect(removed_cards).to(eq([Card.new( "8",  "S"), Card.new( "8", "D")]))
+    end
+    it('returns an empty array if the player does not have cards of the '+
+    'specified ranks') do
+      cards = [Card.new("7", "H"), Card.new("9", "S")]
+      removed_cards = player.remove_cards_with_rank("2")
+      expect(removed_cards).to(eq([]))
+    end
+  end
+
 
 end
