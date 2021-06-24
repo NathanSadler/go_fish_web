@@ -34,6 +34,10 @@ RSpec.describe Server do
   end
 
   after(:each) do
+    Player.clear_players
+  end
+
+  after(:each) do
     Server.reset_game
   end
 
@@ -74,7 +78,7 @@ RSpec.describe Server do
     end
     it("displays the cards in the player's hand") do
       expect(session1).to have_content("2 of Diamonds")
-      take_turn(session1, "2 of Diamonds", "Player 2")
+      take_turn(session1, "2 of Diamonds", "1")
       session1.click_on("Ok")
       session2.click_on "Try to Take Turn"
       expect(session2).to(have_content("3 of Spades"))
@@ -98,7 +102,7 @@ RSpec.describe Server do
       expect(session1).to_not have_content("Player 1")
     end
     it("displays information about the previous turn") do
-      take_turn(session1, "2 of Diamonds", "Player 2")
+      take_turn(session1, "2 of Diamonds", "1")
       session1.click_on("Ok")
       session2.click_on("Try to Take Turn")
       expect(session2).to(have_content("Player 1 asked Player 2 for a 2 of Diamonds"))
@@ -110,7 +114,7 @@ RSpec.describe Server do
       Server.game.players[0].set_hand([Card.new("2", "D"), Card.new("3", "D"), Card.new("K", "S")])
       Server.game.players[1].set_hand([Card.new("3", "S")])
       session1.click_on "Try to Take Turn"
-      session1.choose("Player 2")
+      session1.choose("1")
     end
     it("allows users to ask for/get a card from another player") do
       session1.choose("3 of Diamonds")
@@ -142,11 +146,11 @@ RSpec.describe Server do
       expect(session1).to(have_content("Try to Take Turn"))
     end
     it("does not increment_turn_counter if the player makes a correct guess") do
-      take_turn(session1, "3 of Diamonds", "Player 2")
+      take_turn(session1, "3 of Diamonds", "1")
       expect(Server.game.turn_player).to(eq(Server.game.players[0]))
     end
     it("increments turn_counter if the player makes an incorrect guess") do
-      take_turn(session1, "2 of Diamonds", "Player 2")
+      take_turn(session1, "2 of Diamonds", "1")
       expect(Server.game.turn_player).to(eq(Server.game.players[1]))
     end
   end
@@ -156,13 +160,13 @@ RSpec.describe Server do
       session1.click_on("Try to Take Turn")
     end
     it 'has a button that takes user back to waiting page' do
-      take_turn(session1, "Jack of Spades", "Player 2")
+      take_turn(session1, "Jack of Spades", "1")
       click_on("Ok")
       expect(session1).to(have_content("Try to Take Turn"))
     end
     it ('has a button that takes the user back to the take_turn page, when '+
     'needed') do
-      take_turn(session1, "3 of Diamonds", "Player 2")
+      take_turn(session1, "3 of Diamonds", "1")
       click_on("Ok")
       expect(session1).to(have_content("Take Your Turn"))
     end
