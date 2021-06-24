@@ -114,7 +114,7 @@ RSpec.describe Server do
     end
     it("allows users to ask for/get a card from another player") do
       session1.choose("3 of Diamonds")
-      session1.take_turn("3 of Diamonds")
+      take_turn(session1, "3 of Diamonds", "Player 2")
       session1.click_on("Take Turn")
       expect(Server.game.players[0].has_card?(Card.new("3", "S"))).to(eq(true))
     end
