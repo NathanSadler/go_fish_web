@@ -35,7 +35,6 @@ class Game
     else
       round_result = [[active_player.draw_card(deck)], "the deck"]
     end
-    #binding.pry
     round_result
   end
 
