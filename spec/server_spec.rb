@@ -79,6 +79,12 @@ RSpec.describe Server do
       session2.click_on "Try to Take Turn"
       expect(session2).to(have_content("3 of Spades"))
     end
+    it("doesn't display more cards than the user has") do
+      expect(session1.assert_selector('[name=card]', count: 3)).to(eq(true))
+    end
+    it("doesn't display list more players than there actually are") do
+      expect(session1.assert_selector('[name=player]', count: 3)).to(eq(true))
+    end
     it("lets users select a card") do
       expect {session1.choose("2 of Diamonds")}.to_not raise_error
     end
