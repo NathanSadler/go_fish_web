@@ -16,4 +16,10 @@ class Card
   def ==(other_card)
     (self.rank == other_card.rank) && (self.suit == other_card.suit)
   end
+
+  def self.from_str(str)
+    str_rank = /[AKQJ0-9]{1,2}/.match(str)[0]
+    str_suit = /-.\z/.match(str)[0][1]
+    Card.new(str_rank, str_suit)
+  end
 end

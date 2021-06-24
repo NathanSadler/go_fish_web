@@ -18,6 +18,15 @@ describe "Card" do
     end
   end
 
+  context('#from_str') do
+    it("creates a card from a string in the format 'rank-suit'") do
+      test_card = Card.from_str("K-S")
+      expect(test_card).to(eq(Card.new("K", "S")))
+      test_card = Card.from_str("10-H")
+      expect(test_card).to(eq(Card.new("10", "H")))
+    end
+  end
+
   context('==') do
     let(:card) {Card.new("3", "H")}
     it("is true if the other card has the same rank and suit") do
