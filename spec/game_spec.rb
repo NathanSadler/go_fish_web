@@ -140,8 +140,13 @@ describe "Game" do
       expect(player1.has_card?(Card.new("4", "C"))).to(eq(false))
     end
     it("returns a list of card(s) the player recieved") do
-      result_cards = game.take_turn(player1, player2, "3")
-      expect(result_cards).to(eq([Card.new("3", "S")]))
+      result_cards = game.take_turn(player1, player2, "3")[0]
+      expect(result_cards).to(eq([Card.new("3", "S"), Card.new("3", "D")]))
+    end
+    it("returns the player that gave the cards if the source of "+
+    "the cards wasn't the deck") do
+      result_source = game.take_turn(player1, player2, "3")[1]
+      expect(result_source).to(eq(player2))
     end
   end
 end
