@@ -33,5 +33,9 @@ class Deck
     cards.length
   end
 
+  private
+  def set_cards(new_cards)
+    @cards = new_cards
+  end
 
 end

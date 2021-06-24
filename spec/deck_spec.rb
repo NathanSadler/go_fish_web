@@ -34,6 +34,14 @@ describe 'Deck' do
     end
   end
 
+  context('.set_cards') do
+    it("sets the cards in the deck") do
+      new_cards = [Card.new("A", "S"), Card.new("A", "C")]
+      test_deck.send(:set_cards, new_cards)
+      expect(test_deck.cards).to(eq(new_cards))
+    end
+  end
+
   context('.cards_in_deck') do
     it("returns the number of cards in the deck") do
       test_deck.draw_card

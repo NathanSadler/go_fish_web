@@ -28,6 +28,10 @@ class Game
     deck.set_cards_dealt(true)
   end
 
+  def make_guess(guesser, other_player, card_rank)
+    other_player.remove_cards_with_rank(card_rank).each {|card| guesser.add_card_to_hand(card)}
+  end
+
   def increment_turn_counter
     set_turn_counter(turn_counter + 1)
   end
