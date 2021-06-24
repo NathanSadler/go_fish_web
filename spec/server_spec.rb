@@ -87,7 +87,7 @@ RSpec.describe Server do
       expect(session1.assert_selector('[name=card]', count: 3)).to(eq(true))
     end
     it("doesn't display list more players than there actually are") do
-      expect(session1.assert_selector('[name=player]', count: 1)).to(eq(true))
+      expect(session1.assert_selector('[name=player_id]', count: 1)).to(eq(true))
     end
     it("lets users select a card") do
       expect {session1.choose("2 of Diamonds")}.to_not raise_error
