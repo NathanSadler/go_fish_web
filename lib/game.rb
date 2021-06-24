@@ -28,7 +28,7 @@ class Game
     deck.set_cards_dealt(true)
   end
 
-  def take_turn(active_player, other_player, card_rank)
+  def play_turn(active_player, other_player, card_rank)
     if other_player.has_card_with_rank?(card_rank)
       round_result = [other_player.remove_cards_with_rank(card_rank), other_player]
       round_result[0].each {|card| active_player.add_card_to_hand(card)}
