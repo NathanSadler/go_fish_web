@@ -69,4 +69,8 @@ class Player
       return nil
     end
   end
+
+  def draw_card(deck)
+    add_card_to_hand(deck.draw_card)
+  end
 end

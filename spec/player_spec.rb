@@ -1,5 +1,6 @@
 require_relative '../lib/player'
 require_relative '../lib/card'
+require_relative '../lib/deck'
 
 describe 'Player' do
   let!(:player) {Player.new}
@@ -127,6 +128,15 @@ describe 'Player' do
       cards = [Card.new("7", "H"), Card.new("9", "S")]
       removed_cards = player.remove_cards_with_rank("2")
       expect(removed_cards).to(eq([]))
+    end
+  end
+
+  context('#draw_card') do
+    it("takes the top card from the deck and adds it to their hand") do
+      test_deck = Deck.new([Card.new("8", "H"), Card.new("8", "C")])
+      player.draw_card(test_deck)
+      expect(player.has_card?(Card.new("8", "H"))).to(eq(true))
+      expect(test_deck.cards).to(eq([Card.new("8", "C")]))
     end
   end
 
