@@ -148,5 +148,9 @@ describe "Game" do
       result_source = game.take_turn(player1, player2, "3")[1]
       expect(result_source).to(eq(player2))
     end
+    it("returns 'the deck' as the source if the source wasn't a player") do
+      result_source = game.take_turn(player1, player2, "2")[1]
+      expect(result_source).to(eq("the deck"))
+    end
   end
 end
