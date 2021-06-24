@@ -115,6 +115,7 @@ describe "Game" do
     before(:each) do
       player1.set_hand([Card.new("2", "D"), Card.new("3", "D"), Card.new("K", "S")])
       player2.set_hand([Card.new("3", "S"), Card.new("K", "C"), Card.new("3", "D")])
+      game.deck.send(:set_cards, [Card.new("4", "C")])
     end
     it("takes card from a player if they have a card of a rank they are asked for") do
       game.take_turn(player1, player2, "3")
@@ -137,6 +138,10 @@ describe "Game" do
       expect(player1.has_card?(Card.new("3", "S"))).to(eq(true))
       expect(player1.has_card?(Card.new("3", "D"))).to(eq(true))
       expect(player1.has_card?(Card.new("4", "C"))).to(eq(false))
+    end
+    it("returns a list of card(s) the player recieved") do
+      result_cards = game.take_turn(player1, player2, "3")
+      expect(result_cards).to(eq([Card.new("3", "S")]))
     end
   end
 end

@@ -132,11 +132,15 @@ describe 'Player' do
   end
 
   context('#draw_card') do
+    let(:test_deck) {test_deck = Deck.new([Card.new("8", "H"), Card.new("8", "C")])}
     it("takes the top card from the deck and adds it to their hand") do
-      test_deck = Deck.new([Card.new("8", "H"), Card.new("8", "C")])
       player.draw_card(test_deck)
       expect(player.has_card?(Card.new("8", "H"))).to(eq(true))
       expect(test_deck.cards).to(eq([Card.new("8", "C")]))
+    end
+    it("returns the card the player took") do
+      taken_card = player.draw_card(test_deck)
+      expect(taken_card).to(eq(Card.new("8", "H")))
     end
   end
 

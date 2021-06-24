@@ -71,6 +71,8 @@ class Player
   end
 
   def draw_card(deck)
-    add_card_to_hand(deck.draw_card)
+    taken_card = deck.draw_card
+    add_card_to_hand(taken_card)
+    taken_card
   end
 end

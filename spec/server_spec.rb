@@ -174,7 +174,7 @@ RSpec.describe Server do
     end
     it ("displays a message about what card(s) the player took from another") do
       take_turn(session1, "3 of Diamonds", "1")
-      expect(session1).to(have_content("You took 1 3(s)"))
+      expect(session1).to(have_content("You took 1 3(s) from Player 2"))
     end
   end
 
