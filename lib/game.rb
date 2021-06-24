@@ -33,8 +33,9 @@ class Game
       round_result = [other_player.remove_cards_with_rank(card_rank), other_player]
       round_result[0].each {|card| active_player.add_card_to_hand(card)}
     else
-      round_result = [active_player.draw_card(deck), "the deck"]
+      round_result = [[active_player.draw_card(deck)], "the deck"]
     end
+    #binding.pry
     round_result
   end
 

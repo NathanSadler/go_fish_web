@@ -147,7 +147,9 @@ describe "Game" do
       expect(result_cards).to(eq([Card.new("3", "S"), Card.new("3", "D")]))
     end
     it("returns the card(s) in an array") do
-      result_cards = game.play_turn(player1, player2, "3")[0]
+      result_cards = game.play_turn(player1, player2, "K")[0]
+      expect(result_cards.is_a?(Array)).to(eq(true))
+      result_cards = game.play_turn(player1, player2, "2")[0]
       expect(result_cards.is_a?(Array)).to(eq(true))
     end
     it("returns the player that gave the cards if the source of "+
