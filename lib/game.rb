@@ -11,7 +11,7 @@ class Game
     @turn_counter = 0
     @deck = Deck.new
   end
-#
+
   def add_player(player)
     players.append(player)
   end
@@ -29,8 +29,11 @@ class Game
   end
 
   def take_turn(active_player, other_player, card_rank)
-    other_player.remove_cards_with_rank(card_rank).each {|card| active_player.add_card_to_hand(card)}
-    
+    if other_player.has_card_with_rank?(card_rank)
+      other_player.remove_cards_with_rank(card_rank).each {|card| active_player.add_card_to_hand(card)}
+    else
+      active_player.draw_card(deck)
+    end
   end
 
   def increment_turn_counter

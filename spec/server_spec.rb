@@ -157,18 +157,24 @@ RSpec.describe Server do
 
   context 'turn results page' do
     before(:each) do
+      Server.game.players[0].set_hand([Card.new("2", "D"), Card.new("3", "D"), Card.new("K", "C"), Card.new("K", "S")])
+      Server.game.players[1].set_hand([Card.new("3", "S"), Card.new("K", "D")])
       session1.click_on("Try to Take Turn")
     end
     it 'has a button that takes user back to waiting page' do
-      take_turn(session1, "Jack of Spades", "1")
-      click_on("Ok")
+      take_turn(session1, "2 of Diamonds", "1")
+      session1.click_on("Ok")
       expect(session1).to(have_content("Try to Take Turn"))
     end
     it ('has a button that takes the user back to the take_turn page, when '+
     'needed') do
       take_turn(session1, "3 of Diamonds", "1")
-      click_on("Ok")
+      session1.click_on("Ok")
       expect(session1).to(have_content("Take Your Turn"))
+    end
+    it ("displays a message about what card(s) the player took from another") do
+      take_turn(session1, "3 of Diamonds", "1")
+      expect(session1).to(have_content("You took 1 3(s)"))
     end
   end
 

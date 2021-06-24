@@ -125,12 +125,18 @@ describe "Game" do
       game.take_turn(player1, player2, "3")
       expect(player1.has_card?(Card.new("3", "S"))).to(eq(true))
     end
-    xit("makes a player draw a card if they ask another player for a card and "+
+    it("makes a player draw a card if they ask another player for a card and "+
     " the other player doesn't have a card of that rank") do
-      test_cards = [Card.new("4", "C")]
-      game.deck.send(:set_cards, test_cards)
+      game.deck.send(:set_cards, [Card.new("4", "C")])
       game.take_turn(player1, player2, "2")
-      expect(player1.has_card?(test_cards[0])).to(eq(true))
+      expect(player1.has_card?(Card.new("4", "C"))).to(eq(true))
+    end
+    it("doesn't make the player draw a card if they get a card from a player") do
+      game.deck.send(:set_cards, [Card.new("4", "C")])
+      game.take_turn(player1, player2, "3")
+      expect(player1.has_card?(Card.new("3", "S"))).to(eq(true))
+      expect(player1.has_card?(Card.new("3", "D"))).to(eq(true))
+      expect(player1.has_card?(Card.new("4", "C"))).to(eq(false))
     end
   end
 end
