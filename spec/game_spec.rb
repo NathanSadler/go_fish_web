@@ -1,5 +1,6 @@
 require_relative '../lib/game'
 require_relative '../lib/player'
+require 'pry'
 
 describe "Game" do
   let(:game) {Game.new}
@@ -116,6 +117,8 @@ describe "Game" do
       player1.set_hand([Card.new("2", "D"), Card.new("3", "D"), Card.new("K", "S")])
       player2.set_hand([Card.new("3", "S"), Card.new("K", "C"), Card.new("3", "D")])
       game.deck.send(:set_cards, [Card.new("4", "C")])
+      game.add_player(player1)
+      game.add_player(player2)
     end
     it("takes card from a player if they have a card of a rank they are asked for") do
       game.play_turn(player1, player2, "3")
@@ -125,9 +128,6 @@ describe "Game" do
   " rank and they have them") do
       game.play_turn(player1, player2, "3")
       expect(player1.has_card?(Card.new("3", "S"))).to(eq(true))
-    end
-    it("returns the card(s) in an array") do
-      
     end
     it("makes a player draw a card if they ask another player for a card and "+
     " the other player doesn't have a card of that rank") do
@@ -145,6 +145,10 @@ describe "Game" do
     it("returns a list of card(s) the player recieved") do
       result_cards = game.play_turn(player1, player2, "3")[0]
       expect(result_cards).to(eq([Card.new("3", "S"), Card.new("3", "D")]))
+    end
+    it("returns the card(s) in an array") do
+      result_cards = game.play_turn(player1, player2, "3")[0]
+      expect(result_cards.is_a?(Array)).to(eq(true))
     end
     it("returns the player that gave the cards if the source of "+
     "the cards wasn't the deck") do
