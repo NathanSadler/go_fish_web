@@ -118,11 +118,11 @@ RSpec.describe Server do
     end
     it("allows users to ask for/get a card from another player") do
       session1.choose("3 of Diamonds")
-      take_turn(session1, "3 of Diamonds", "Player 2")
+      take_turn(session1, "3 of Diamonds", "1")
       expect(Server.game.players[0].has_card?(Card.new("3", "S"))).to(eq(true))
     end
     it("directs players to a turn_result page") do
-      take_turn(session1, "3 of Diamonds", "Player 2")
+      take_turn(session1, "3 of Diamonds", "1")
       expect(session1).to(have_content("Turn Results"))
     end
     it("has the user draw from the deck if the player they ask don't have "+
