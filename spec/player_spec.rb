@@ -130,5 +130,17 @@ describe 'Player' do
     end
   end
 
+  context('#has_card_with_rank?') do
+    before(:each) do
+      player.add_card_to_hand(Card.new("7", "K"))
+    end
+    it("is true if the player has a card with the specified rank") do
+      expect(player.has_card_with_rank?("7")).to(eq(true))
+    end
+    it("is false if the player doesn't have a card with the specified rank") do
+      expect(player.has_card_with_rank?("8")).to(eq(false))
+    end
+  end
+
 
 end
