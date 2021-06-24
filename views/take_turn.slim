@@ -6,7 +6,7 @@ form action="make_guess" method="POST"
     label for="#{card.rank}-#{card.suit}" = card.description
   p Select the player to ask from
   - (game.players.reject {|player| player == game.turn_player}).each do |player|
-    input type="radio" id="#{player.id}" name="player" value="#{player.id}" \
+    input type="radio" id="#{player.id}" name="player_id" value="#{player.id}" \
     label for="#{player.name}" = player.name
 
   button type="submit" Take Turn
