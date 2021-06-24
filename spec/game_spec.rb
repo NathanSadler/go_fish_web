@@ -18,7 +18,7 @@ describe "Game" do
       game.add_player(player)
       expect(game.players).to(eq([player]))
     end
-    xit "sets the turn_pointer to 0 if they are the first player" do
+    it "sets the turn_pointer to 0 if they are the first player" do
       game = Game.new
       game.add_player(Player.new)
       expect(game.move_pointer).to(eq(0))
