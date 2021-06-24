@@ -141,6 +141,4 @@ describe 'Player' do
       expect(player.has_card_with_rank?("8")).to(eq(false))
     end
   end
-
-
 end

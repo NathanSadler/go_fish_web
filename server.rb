@@ -70,9 +70,9 @@ class Server < Sinatra::Base
   post '/make_guess' do
     asked_card = Card.from_str(params[:card])
     asked_player = Player.get_player_by_id(params[:player_id].to_i)
-    if asked_player.has_card_with_rank?(asked_card.rank)
-      asked_player.remove_cards_with_rank(asked_card.rank).each {|card| self.class.game.turn_player.add_card_to_hand(card)}
-    end
+    # if asked_player.has_card_with_rank?(asked_card.rank)
+    #   asked_player.remove_cards_with_rank(asked_card.rank).each {|card| self.class.game.turn_player.add_card_to_hand(card)}
+    # end
     self.class.game.increment_turn_counter
     redirect '/turn_results'
   end
