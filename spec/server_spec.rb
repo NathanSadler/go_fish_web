@@ -83,7 +83,7 @@ RSpec.describe Server do
       expect(session1.assert_selector('[name=card]', count: 3)).to(eq(true))
     end
     it("doesn't display list more players than there actually are") do
-      expect(session1.assert_selector('[name=player]', count: 3)).to(eq(true))
+      expect(session1.assert_selector('[name=player]', count: 1)).to(eq(true))
     end
     it("lets users select a card") do
       expect {session1.choose("2 of Diamonds")}.to_not raise_error
@@ -107,6 +107,8 @@ RSpec.describe Server do
 
   context 'asking for cards from another player' do
     before(:each) do
+      Server.game.players[0].set_hand([Card.new("2", "D"), Card.new("3", "D"), Card.new("K", "S")])
+      Server.game.players[1].set_hand([Card.new("3", "S")])
       session1.click_on "Try to Take Turn"
       session1.choose("Player 2")
     end

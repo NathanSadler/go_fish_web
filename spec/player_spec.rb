@@ -15,6 +15,19 @@ describe 'Player' do
     end
   end
 
+  context('.has_card?') do
+    let(:card_list) {[Card.new("4", "H"), Card.new("7", "D")]}
+    before(:each) do
+      player.set_hand(card_list)
+    end
+    it("is true if the player has the specified card") do
+      expect(player.has_card?(Card.new("4", "H"))).to(eq(true))
+    end
+    it("is false if the player doesn't have the specified card") do
+      expect(player.has_card?(Card.new("Q", "D"))).to(eq(false))
+    end
+  end
+
   context('.set_hand') do
     let(:card_list) {[Card.new("4", "H"), Card.new("7", "D")]}
     it("sets the hand of the player") do
@@ -25,13 +38,6 @@ describe 'Player' do
       player.add_card_to_hand(Card.new("8", "S"))
       player.set_hand(card_list)
       expect(player.hand).to(eq(card_list))
-    end
-  end
-
-  context('#set_player_count') do
-    it("sets the player_count variable") do
-      Player.set_player_count(999)
-      expect(Player.player_count).to(eq(999))
     end
   end
 
