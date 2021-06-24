@@ -69,8 +69,11 @@ class Server < Sinatra::Base
   # TODO: finish this
   post '/make_guess' do
     self.class.game.increment_turn_counter
-    print(params)
-    # TODO: stuff here later
+    # print(Player.get_player_by_id(params[:id].to_i).name)
+    if(Player.get_player_by_id(params[:id].to_i).has_card?(Card.from_str(params[:card])))
+      
+      # print("TRUE TRUE TRUE TRUE TRUE!!!!")
+    end
     redirect '/turn_results'
   end
 
