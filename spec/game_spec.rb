@@ -126,6 +126,9 @@ describe "Game" do
       game.play_turn(player1, player2, "3")
       expect(player1.has_card?(Card.new("3", "S"))).to(eq(true))
     end
+    it("returns the card(s) in an array") do
+      
+    end
     it("makes a player draw a card if they ask another player for a card and "+
     " the other player doesn't have a card of that rank") do
       game.deck.send(:set_cards, [Card.new("4", "C")])
