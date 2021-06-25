@@ -65,7 +65,6 @@ class Server < Sinatra::Base
     slim :take_turn, locals: {game: self.class.game, current_player: session[:current_player]}
   end
 
-  # TODO: finish this
   post '/make_guess' do
     asked_card = Card.from_str(params[:card])
     asked_player = Player.get_player_by_id(params[:player_id].to_i)

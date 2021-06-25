@@ -113,12 +113,14 @@ RSpec.describe Server do
     before(:each) do
       Server.game.players[0].set_hand([Card.new("2", "D"), Card.new("3", "D"), Card.new("K", "S")])
       Server.game.players[1].set_hand([Card.new("3", "S")])
+      Server.game.deck.send(:set_cards, [Card.new("7", "H")])
       session1.click_on "Try to Take Turn"
       session1.choose("1")
     end
     it("allows users to ask for/get a card from another player") do
       take_turn(session1, "3 of Diamonds", "1")
       expect(Server.game.players[0].has_card?(Card.new("3", "S"))).to(eq(true))
+      expect(Server.game.players[1].has_card?(Card.new("3", "S"))).to_not(eq(true))
     end
     it("directs players to a turn_result page") do
       take_turn(session1, "3 of Diamonds", "1")
@@ -128,7 +130,7 @@ RSpec.describe Server do
     "cards of the specified rank") do
       session1.choose("2 of Diamonds")
       session1.click_on("Take Turn")
-      expect(Server.game.players[0].has_card?(Card.new("7", "H")))
+      expect(Server.game.players[0].has_card?(Card.new("7", "H"))).to(eq(true))
     end
     it("lets the user go again if the other player has a card of the rank they "+
     "want") do
