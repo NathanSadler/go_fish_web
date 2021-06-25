@@ -25,18 +25,39 @@ describe "Game" do
   end
 
 
-  context '.take_turn' do
+  context '.play_turn' do
     before(:each) do
       [1, 2].each {|time| game.add_player(Player.new("Player #{time}"))}
+      game.players[0].set_hand([Card.new("2", "D"), Card.new("3", "D"), Card.new("K", "S")])
+      game.players[1].set_hand([Card.new("3", "S")])
+      game.deck.send(:set_cards, [Card.new("4", "C")])
     end
-    it("moves the turn pointer after the turn is over") do
-      [1, 0].each do |time|
-        game.take_turn
-        expect(game.active_player).to(eq(game.players[time]))
-      end
+    let(:player1) {game.players[0]}
+    let(:player2) {game.players[1]}
+
+    it("gives card(s) to a player who correctly asks another player who asks "+
+    " a specific rank") do
+      game.play_turn(player1, player2, "3")
+      expect(player1.has_card?(Card.new("3", "S")))
+    end
+
+    it("gives a card from the deck to a player asking another player for a "+
+    "card of a rank that other player doesn't have") do
+      game.play_turn(player1, player2, "2")
+      expect(player1.has_card?(Card.new("4", "C")))
     end
   end
-  
+
+  context '.empty?' do
+    it("is true if there are no players in the game") do
+      expect(game.empty?).to(eq(true))
+    end
+    it("is false if there are players in the game") do
+      game.add_player(Player.new)
+      expect(game.empty?).to(eq(false))
+    end
+  end
+
   context '.active_player' do
     it("returns the player whose turn it is") do
       # TODO: finish this test
