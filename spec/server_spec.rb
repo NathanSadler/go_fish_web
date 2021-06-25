@@ -142,7 +142,6 @@ RSpec.describe Server do
     "of the rank they ask for") do
       session1.choose("2 of Diamonds")
       session1.click_on("Take Turn")
-      binding.pry
       session1.click_on("Ok")
       expect(session1).to(have_content("Try to Take Turn"))
     end
@@ -175,6 +174,7 @@ RSpec.describe Server do
     end
     it ("displays a message about what card(s) the player took from another") do
       take_turn(session1, "3 of Diamonds", "1")
+      binding.pry
       expect(session1).to(have_content("You took 1 3(s) from Player 2"))
     end
   end
