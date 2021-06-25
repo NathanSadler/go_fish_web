@@ -55,7 +55,7 @@ RSpec.describe Server do
     it("deals cards to all players in the game") do
       [0,1].each { |player_number| expect(Server.game.players[player_number].hand.empty?).to(eq(false))}
     end
-    it("doesn't deal cards for the same game multiple times") do
+    xit("doesn't deal cards for the same game multiple times") do
       Server.game.deck
     end
     it("redirects to itself and doesn't do anything else if there are fewer "+
@@ -93,7 +93,7 @@ RSpec.describe Server do
       expect {session1.choose("2 of Diamonds")}.to_not raise_error
     end
     it("doesn't display cards not in the player's hand") do
-      expect(session1).to_not have_content("10 of Hearts")
+      expect(session1).to_not have_content("3 of Spades")
     end
     it("displays the other players") do
       expect(session1).to have_content("Player 2")
@@ -117,7 +117,6 @@ RSpec.describe Server do
       session1.choose("1")
     end
     it("allows users to ask for/get a card from another player") do
-      session1.choose("3 of Diamonds")
       take_turn(session1, "3 of Diamonds", "1")
       expect(Server.game.players[0].has_card?(Card.new("3", "S"))).to(eq(true))
     end
