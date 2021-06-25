@@ -38,13 +38,19 @@ describe "Game" do
     it("gives card(s) to a player who correctly asks another player who asks "+
     " a specific rank") do
       game.play_turn(player1, player2, "3")
-      expect(player1.has_card?(Card.new("3", "S")))
+      expect(player1.has_card?(Card.new("3", "S"))).to(eq(true))
+    end
+
+    it("removes a card from the hand of a player who gets asked for a card of "+
+    "a rank they have") do
+      game.play_turn(player1, player2, "3")
+      expect(player2.has_card?(Card.new("3", "S"))).to(eq(false))
     end
 
     it("gives a card from the deck to a player asking another player for a "+
     "card of a rank that other player doesn't have") do
       game.play_turn(player1, player2, "2")
-      expect(player1.has_card?(Card.new("4", "C")))
+      expect(player1.has_card?(Card.new("4", "C"))).to(eq(true))
     end
   end
 
