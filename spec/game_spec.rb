@@ -47,6 +47,12 @@ describe "Game" do
       expect(player2.has_card?(Card.new("3", "S"))).to(eq(false))
     end
 
+    it("returns the name of the player that gave the turn_player a card in "+
+    "the second element of an array") do
+      turn_result = game.play_turn(player1, player2, "3")[1]
+      expect(turn_result).to(eq("Player 2"))
+    end
+
     it("gives a card from the deck to a player asking another player for a "+
     "card of a rank that other player doesn't have") do
       game.play_turn(player1, player2, "2")
