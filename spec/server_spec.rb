@@ -99,6 +99,7 @@ RSpec.describe Server do
       expect(session1).to have_content("Player 2")
     end
     it("does not display the player using the page") do
+      binding.pry
       expect(session1).to_not have_content("Player 1")
     end
     it("displays information about the previous turn") do
@@ -120,7 +121,8 @@ RSpec.describe Server do
     it("allows users to ask for/get a card from another player") do
       take_turn(session1, "3 of Diamonds", "1")
       expect(Server.game.players[0].has_card?(Card.new("3", "S"))).to(eq(true))
-      expect(Server.game.players[1].has_card?(Card.new("3", "S"))).to_not(eq(true))
+      expect(Server.game.players[0].has_card?(Card.new("7", "H"))).to(eq(false))
+      expect(Server.game.players[1].has_card?(Card.new("3", "S"))).to(eq(false))
     end
     it("directs players to a turn_result page") do
       take_turn(session1, "3 of Diamonds", "1")

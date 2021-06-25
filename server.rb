@@ -44,8 +44,8 @@ class Server < Sinatra::Base
 
   post '/wait_to_start' do
     player = Player.new(params['name'])
-    session[:current_player] = player
     self.class.game.add_player(player)
+    session[:current_player] = player
     redirect('/wait_to_start')
   end
 
