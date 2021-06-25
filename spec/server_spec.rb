@@ -204,12 +204,11 @@ RSpec.describe Server do
     before(:each) do
       player1.set_hand([Card.new("K", "D")])
       session1.click_on "Try to Take Turn"
-
+      take_turn(session1, "King of Diamonds", "1")
     end
 
     it "links players to the take_turn page if it is their turn" do
-      expect(session1).to have_content("Take Your Turn")
-      session1.click_on "Take Turn"
+      session1.click_on "Ok"
       session2.click_on "Try to Take Turn"
       expect(session2).to have_content("Take Your Turn")
     end
