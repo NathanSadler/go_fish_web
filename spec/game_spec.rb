@@ -36,17 +36,7 @@ describe "Game" do
       end
     end
   end
-
-  context '.empty?' do
-    it("is true if there are no players in the game") do
-      expect(game.empty?).to(eq(true))
-    end
-    it("is false if there are players in the game") do
-      game.add_player(Player.new)
-      expect(game.empty?).to(eq(false))
-    end
-  end
-
+  
   context '.active_player' do
     it("returns the player whose turn it is") do
       # TODO: finish this test
