@@ -155,7 +155,7 @@ describe "Game" do
     it("returns the player that gave the cards if the source of "+
     "the cards wasn't the deck") do
       result_source = game.play_turn(player1, player2, "3")[1]
-      expect(result_source).to(eq(player2.name))
+      expect(result_source).to(eq("Player 2"))
     end
     it("returns 'the deck' as the source if the source wasn't a player") do
       result_source = game.play_turn(player1, player2, "2")[1]
