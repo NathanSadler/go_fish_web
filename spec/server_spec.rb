@@ -199,17 +199,22 @@ RSpec.describe Server do
   end
 
   context "players pressing the 'try to take turn button'" do
-    
-    it "links players to the take_turn page if it is their turn" do
+    [:player1, :player2].each_with_index {|player, index| let(player) {Server.game.players[index]}}
+
+    before(:each) do
+      player1.set_hand([Card.new("K", "D")])
       session1.click_on "Try to Take Turn"
+
+    end
+
+    it "links players to the take_turn page if it is their turn" do
       expect(session1).to have_content("Take Your Turn")
       session1.click_on "Take Turn"
       session2.click_on "Try to Take Turn"
       expect(session2).to have_content("Take Your Turn")
     end
     it "redirects players to the waiting_room page if it isn't their turn" do
-      session1.click_on "Try to Take Turn"
-      session1.click_on "Take Turn"
+      session1.click_on "Ok"
       session1.click_on "Try to Take Turn"
       expect(session1).to_not have_content("Take Your Turn")
     end
