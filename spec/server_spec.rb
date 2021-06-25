@@ -199,6 +199,7 @@ RSpec.describe Server do
   end
 
   context "players pressing the 'try to take turn button'" do
+    
     it "links players to the take_turn page if it is their turn" do
       session1.click_on "Try to Take Turn"
       expect(session1).to have_content("Take Your Turn")

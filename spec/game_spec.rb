@@ -11,6 +11,10 @@ describe "Game" do
     end
   end
 
+  after(:each) do
+    Player.clear_players
+  end
+
   context '.add_player' do
     it "adds a Player to the game" do
       game = Game.new
