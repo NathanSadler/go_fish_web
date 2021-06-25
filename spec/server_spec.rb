@@ -142,6 +142,7 @@ RSpec.describe Server do
     "of the rank they ask for") do
       session1.choose("2 of Diamonds")
       session1.click_on("Take Turn")
+      binding.pry
       session1.click_on("Ok")
       expect(session1).to(have_content("Try to Take Turn"))
     end
