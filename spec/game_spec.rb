@@ -35,11 +35,11 @@ describe "Game" do
       [1, 2, 3].each {|time| game.add_player(Player.new("Player #{time}"))}
     end
 
-    xit("moves to the next player in the players array") do
+    it("moves to the next player in the players array") do
       game.move_turn_pointer
       expect(game.active_player).to(eq(game.players[1]))
     end
-    xit("doesn't do anything if the move_pointer is nil") do
+    it("doesn't do anything if the move_pointer is nil") do
       3.times {game.move_turn_pointer}
       expect(game.active_player).to(eq(game.players[0]))
     end
@@ -49,7 +49,7 @@ describe "Game" do
     before(:each) do
       [1, 2].each {|time| game.add_player(Player.new("Player #{time}"))}
     end
-    xit("moves the turn pointer after the turn is over") do
+    it("moves the turn pointer after the turn is over") do
       [1, 0].each do |time|
         game.take_turn
         expect(game.active_player).to(eq(game.players[time]))
@@ -58,10 +58,10 @@ describe "Game" do
   end
 
   context '.empty?' do
-    xit("is true if there are no players in the game") do
+    it("is true if there are no players in the game") do
       expect(game.empty?).to(eq(true))
     end
-    xit("is false if there are players in the game") do
+    it("is false if there are players in the game") do
       game.add_player(Player.new)
       expect(game.empty?).to(eq(false))
     end
