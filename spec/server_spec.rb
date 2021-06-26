@@ -35,11 +35,12 @@ RSpec.describe Server do
 
   after(:each) do
     Player.clear_players
-  end
-
-  after(:each) do
     Server.reset_game
   end
+
+  # after(:each) do
+  #
+  # end
 
   context('user enters their name and waits for the game to start') do
     it("takes the user to a waiting page") do
@@ -219,12 +220,12 @@ RSpec.describe Server do
 
     before(:each) do
       player1.set_hand([Card.new("K", "D")])
+      player2.set_hand([Card.new("4", "S")])
       session1.click_on "Try to Take Turn"
       take_turn(session1, "King of Diamonds", "1")
     end
 
     it "links players to the take_turn page if it is their turn" do
-      player2.set_hand([Card.new("4", "S")])
       session1.click_on "Ok"
       session2.click_on "Try to Take Turn"
       expect(session2).to have_content("Take Your Turn")
