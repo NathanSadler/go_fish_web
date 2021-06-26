@@ -55,6 +55,12 @@ RSpec.describe Server do
     it("deals cards to all players in the game") do
       [0,1].each { |player_number| expect(Server.game.players[player_number].hand.empty?).to(eq(false))}
     end
+    it("shuffles the deck before dealing cards") do
+      dummy_deck = Deck.new
+      14.times {dummy_deck.draw_card}
+      binding.pry
+      expect(Server.game.deck.cards).to_not(eq(dummy_deck.cards))
+    end
     it("doesn't deal cards for the same game multiple times") do
       expect(Server.game.deck.cards.length).to(eq(38))
     end
