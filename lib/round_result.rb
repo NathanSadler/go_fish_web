@@ -14,6 +14,14 @@ class RoundResult
     cards.map(&:rank).include?(expected_rank)
   end
 
+  def hidden_message
+    if !cards.empty?
+      "You took #{cards.length} #{cards[0].rank}(s) from #{source_name}"
+    else
+      "You took no cards"
+    end
+  end
+
   # Returns the name of the source
   def source_name
     if source.is_a?(Player)

@@ -54,10 +54,25 @@ describe RoundResult do
         recieving_player: test_player, expected_rank:"7")
       expect(test_result.matched_rank?).to(eq(true))
     end
+
     it("is false if there isn't a card with expected_rank in cards") do
       test_result = RoundResult.new(cards: test_cards,
         recieving_player: test_player, expected_rank:"8")
       expect(test_result.matched_rank?).to(eq(false))
+    end
+  end
+
+  context('#hidden_message') do
+    it("returns a message in the form 'you took <x> <y>(s) from <z>'") do
+      test_result = RoundResult.new(cards: test_cards, recieving_player: test_player,
+        source: test_player)
+      expect(test_result.hidden_message).to(eq("You took 1 7(s) from Test Player"))
+    end
+
+    it("returns 'You took no cards' if cards is empty") do
+      test_result = RoundResult.new(cards: [], recieving_player: test_player,
+        source: test_player)
+      expect(test_result.hidden_message).to(eq("You took no cards"))
     end
   end
 end
