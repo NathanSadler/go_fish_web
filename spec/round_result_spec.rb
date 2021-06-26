@@ -47,4 +47,17 @@ describe RoundResult do
       expect(test_result.source_name).to(eq("test string"))
     end
   end
+
+  context('#matched_rank?') do
+    it("is true if there is a card with expected_rank rank in cards") do
+      test_result = RoundResult.new(cards: test_cards,
+        recieving_player: test_player, expected_rank:"7")
+      expect(test_result.matched_rank?).to(eq(true))
+    end
+    it("is false if there isn't a card with expected_rank in cards") do
+      test_result = RoundResult.new(cards: test_cards,
+        recieving_player: test_player, expected_rank:"8")
+      expect(test_result.matched_rank?).to(eq(false))
+    end
+  end
 end

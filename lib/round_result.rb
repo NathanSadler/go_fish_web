@@ -10,6 +10,10 @@ class RoundResult
     @source = source
   end
 
+  def matched_rank?
+    cards.map(&:rank).include?(expected_rank)
+  end
+
   # Returns the name of the source
   def source_name
     if source.is_a?(Player)
