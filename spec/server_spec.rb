@@ -127,7 +127,6 @@ RSpec.describe Server do
       take_turn(session1, "3 of Diamonds", "1")
       session1.click_on "Ok"
       expect(session1).to have_content("3 of Spades")
-      binding.pry
       expect(Server.game.players[0].has_card?(Card.new("3", "S"))).to(eq(true))
       expect(Server.game.players[1].has_card?(Card.new("3", "S"))).to(eq(false))
     end
