@@ -2,6 +2,8 @@ require 'rack/test'
 require 'rspec'
 require 'capybara'
 require 'capybara/dsl'
+require 'selenium/webdriver'
+require 'webdrivers/chromedriver'
 ENV['RACK_ENV'] = 'test'
 require_relative '../server'
 require_relative '../lib/card'
@@ -121,6 +123,24 @@ RSpec.describe Server do
       session1.click_on("Ok")
       session2.click_on("Try to Take Turn")
       expect(session2).to(have_content("Player 1 asked Player 2 for a 2 of Diamonds"))
+    end
+  end
+
+  context 'take_turn page displaying results of each turn' do
+    let(:session1) {Capybara::Session.new(:selenium_chrome_headless, Server.new)}
+    let(:session2) {Capybara::Session.new(:selenium_chrome_headless, Server.new)}
+
+    before(:each) do
+      [session1, session2].each_with_index do |session, index|
+        session.visit '/'
+        session.fill_in :name, with: "Player #{index + 1}"
+        session.click_on 'Join'
+      end
+      [session1, session2].each {|session| session.click_on 'Proceed to Game'}
+    end
+
+    it("do be like that sometimes") do
+      expect(true).to(be(true))
     end
   end
 

@@ -15,6 +15,16 @@ class Server < Sinatra::Base
     @@game ||= Game.new
   end
 
+  def pusher_client
+    @pusher_client ||= Pusher::Client.new(
+      app_id: '1225800',
+      key: 'cb19a8810ead6b423f1e',
+      secret: '0a5b61ec2c1e71f00929',
+      cluster: 'us2',
+      encrypted: true
+    )
+  end
+
   def self.reset_game
     @@game = nil
   end
