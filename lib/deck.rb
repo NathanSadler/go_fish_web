@@ -21,6 +21,10 @@ class Deck
     cards_dealt
   end
 
+  def shuffle
+    cards.shuffle!
+  end
+
   def set_cards_dealt(new_value)
     @cards_dealt = new_value
   end

@@ -19,10 +19,11 @@ describe 'Deck' do
     end
   end
 
-  context('.shuffle') do
+  context('#shuffle') do
     before(:each) do
       test_deck.shuffle
     end
+
     let(:unmatched_card) {false}
     let(:second_deck) {Deck.new}
 
