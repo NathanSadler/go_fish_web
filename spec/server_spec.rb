@@ -21,6 +21,7 @@ RSpec.describe Server do
   include Capybara::DSL
   before(:all) do
     Capybara.app = Server.new
+    Capybara.server = :webrick
   end
   let(:session1) {Capybara::Session.new(:rack_test, Server.new)}
   let(:session2) {Capybara::Session.new(:rack_test, Server.new)}
