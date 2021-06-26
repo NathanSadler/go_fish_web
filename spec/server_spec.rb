@@ -224,6 +224,7 @@ RSpec.describe Server do
     end
 
     it "links players to the take_turn page if it is their turn" do
+      player2.set_hand([Card.new("4", "S")])
       session1.click_on "Ok"
       session2.click_on "Try to Take Turn"
       expect(session2).to have_content("Take Your Turn")
