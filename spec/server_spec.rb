@@ -89,6 +89,12 @@ RSpec.describe Server do
     it("doesn't display list more players than there actually are") do
       expect(session1.assert_selector('[name=player_id]', count: 1)).to(eq(true))
     end
+    it("displays new cards in the player's hand if they got any since last "+
+    "time they were on the page") do
+      take_turn(session1, "3 of Diamonds", "1")
+      session1.click_on("Ok")
+      expect(session1).to(have_content("3 of Spades"))
+    end
     it("lets users select a card") do
       expect {session1.choose("2 of Diamonds")}.to_not raise_error
     end
@@ -99,7 +105,6 @@ RSpec.describe Server do
       expect(session1).to have_content("Player 2")
     end
     it("does not display the player using the page") do
-      binding.pry
       expect(session1).to_not have_content("Player 1")
     end
     it("displays information about the previous turn") do
@@ -120,8 +125,10 @@ RSpec.describe Server do
     end
     it("allows users to ask for/get a card from another player") do
       take_turn(session1, "3 of Diamonds", "1")
+      session1.click_on "Ok"
+      expect(session1).to have_content("3 of Spades")
+      binding.pry
       expect(Server.game.players[0].has_card?(Card.new("3", "S"))).to(eq(true))
-      expect(Server.game.players[0].has_card?(Card.new("7", "H"))).to(eq(false))
       expect(Server.game.players[1].has_card?(Card.new("3", "S"))).to(eq(false))
     end
     it("directs players to a turn_result page") do
@@ -136,8 +143,7 @@ RSpec.describe Server do
     end
     it("lets the user go again if the other player has a card of the rank they "+
     "want") do
-      session1.choose("3 of Diamonds")
-      session1.click_on("Take Turn")
+      take_turn(session1, "3 of Diamonds", "1")
       session1.click_on("Ok")
       expect(session1).to(have_content("Take Your Turn"))
     end

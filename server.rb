@@ -66,6 +66,7 @@ class Server < Sinatra::Base
   end
 
   post '/make_guess' do
+    # TODO: Just pass the 3 instead of 3-D. Then you don't need to find the card frm string only to get the rank from it.
     asked_card = Card.from_str(params[:card])
     asked_player = Player.get_player_by_id(params[:player_id].to_i)
     session[:turn_result] = self.class.game.play_turn(self.class.game.turn_player, asked_player, asked_card.rank)
