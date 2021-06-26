@@ -129,7 +129,7 @@ RSpec.describe Server do
 
   context 'take_turn page displaying results of each turn' do
     let(:session1) {Capybara::Session.new(:selenium_chrome_headless, Server.new)}
-    let(:session2) {Capybara::Session.new(:selenium_chrome_headless, Server.new)}
+    let(:session2) {Capybara::Session.new(:selenium_chrome, Server.new)}
 
     before(:each, :js) do
       [session1, session2].each_with_index do |session, index|
@@ -140,8 +140,16 @@ RSpec.describe Server do
       [session1, session2].each {|session| session.click_on 'Proceed to Game'}
     end
 
-    it("do be like that sometimes") do
-      expect(true).to(be(true))
+    let(:player1) {Server.game.players[0]}
+
+    it("displays turn results as they happen") do
+      Server.game.players[0].set_hand([Card.new("2", "D"), Card.new("3", "D"), Card.new("K", "S")])
+      Server.game.players[1].set_hand([Card.new("3", "S")])
+      session1.click_on "Try to Take Turn"
+      #binding.pry
+      expect(session1).to(have_content("3 of Diamonds"))
+      take_turn(session1, "3 of Diamonds", "1")
+      expect(session2).to(have_content("Player 1 took 1 3(s) from Player 2"))
     end
   end
 
