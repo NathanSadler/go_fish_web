@@ -14,8 +14,6 @@ describe Card do
 
     it 'creates cards with ranks and suits as strings' do
       card = Card.new(2, "D")
-
-      expect(card.rank).to(be_a(String))
       expect(card.suit).to(be_a(String))
     end
 
