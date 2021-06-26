@@ -17,9 +17,6 @@ describe Card do
       expect(card.suit).to(be_a(String))
     end
 
-    context '' do
-
-    end
   end
 
   context('description') do
