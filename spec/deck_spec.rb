@@ -6,6 +6,7 @@ describe 'Deck' do
     it("creates a deck of 52 cards") do
       expect(test_deck.cards.length).to(eq(52))
     end
+
     it("has cards_dealt set to false on creation") do
       expect(test_deck.cards_dealt?).to(eq(false))
     end
