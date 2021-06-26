@@ -20,6 +20,13 @@ describe RoundResult do
       expect(test_result.expected_rank).to(eq('none given'))
     end
 
+    it("automatically converts cards into an array") do
+      test_result = RoundResult.new(cards: Card.new("4", "H"),
+        recieving_player: test_player)
+      expect(test_result.cards).to(be_a(Array))
+      expect(test_result.cards).to(eq([Card.new("4", "H")]))
+    end
+
     it("automatically converts expected_rank into a string") do
       test_result = RoundResult.new(cards: test_cards,
         recieving_player: test_player, expected_rank:4)

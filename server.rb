@@ -7,6 +7,7 @@ require_relative 'lib/game'
 require_relative 'lib/player'
 require_relative 'lib/deck'
 require_relative 'lib/card'
+require_relative 'lib/round_result'
 
 class Server < Sinatra::Base
   def self.game
@@ -72,16 +73,15 @@ class Server < Sinatra::Base
     # TODO: Just pass the 3 instead of 3-D. Then you don't need to find the card frm string only to get the rank from it.
     asked_card = Card.from_str(params[:card])
     asked_player = Player.get_player_by_id(params[:player_id].to_i)
-    session[:turn_result] = self.class.game.play_turn(self.class.game.turn_player, asked_player, asked_card.rank)
-    session[:rank_match] = session[:turn_result][0].map(&:rank).include?(asked_card.rank)
-    self.class.game.increment_turn_counter if !session[:rank_match]
+    session[:turn_result] = self.class.game.play_turn(asked_player,
+      asked_card.rank)
+    self.class.game.increment_turn_counter if !session[:turn_result].matched_rank?
     redirect '/turn_results'
   end
 
   get '/turn_results' do
     turn_result = session[:turn_result]
-    rank_match = session[:rank_match]
-    slim :turn_results, locals: {turn_result: turn_result, rank_match: rank_match}
+    slim :turn_results, locals: {turn_result: turn_result}
   end
 
   get '/:slug' do

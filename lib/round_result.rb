@@ -5,7 +5,7 @@ class RoundResult
   attr_reader :cards, :source, :expected_rank
   def initialize(cards:, recieving_player:, expected_rank: "none given",
     source: "the deck")
-    @cards = cards
+    cards.is_a?(Array) ? @cards = cards : @cards = [cards]
     @expected_rank = expected_rank.to_s
     @source = source
   end

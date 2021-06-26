@@ -1,4 +1,5 @@
 require_relative 'deck'
+require_relative 'round_result'
 class Game
   attr_reader :max_players, :min_players, :move_pointer, :deck, :turn_counter
   attr_accessor :players
@@ -28,17 +29,14 @@ class Game
     deck.set_cards_dealt(true)
   end
 
-  def play_turn(active_player, other_player, card_rank)
-    # TODO Just use turn_player within here instead of passing the activeplayer in.
-    # TODO what does other player mean? Maybe a intention revealing name
-    if other_player.has_card_with_rank?(card_rank)
-      round_result = [other_player.remove_cards_with_rank(card_rank), other_player.name]
-      round_result[0].each {|card| active_player.add_card_to_hand(card)}
+  def play_turn(asked_player, card_rank)
+    if asked_player.has_card_with_rank?(card_rank)
+      recieved_cards, card_source = [asked_player.remove_cards_with_rank(card_rank), asked_player]
     else
-      round_result = [[active_player.draw_card(deck)], "the deck"]
+      recieved_cards, card_source = [turn_player.draw_card(deck), "the deck"]
     end
-    # TODO Can the round result be its own object?
-    round_result
+    turn_player.add_card_to_hand(recieved_cards)
+    RoundResult.new(cards: recieved_cards, source: card_source, recieving_player: turn_player, expected_rank: card_rank)
   end
 
   def increment_turn_counter

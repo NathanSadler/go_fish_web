@@ -1,6 +1,6 @@
 h1 Turn Results
-p = "You took #{turn_result[0].length} #{turn_result[0][0].rank}(s) from #{turn_result[1]}"
-- if rank_match
+p = turn_result.hidden_message
+- if turn_result.matched_rank?
   a href="/take_turn" Ok
 - else
   a href="/waiting_room" Ok

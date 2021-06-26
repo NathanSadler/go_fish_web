@@ -1,5 +1,6 @@
 require_relative '../lib/game'
 require_relative '../lib/player'
+require_relative '../lib/round_result'
 require 'pry'
 
 describe "Game" do
@@ -37,37 +38,35 @@ describe "Game" do
 
     it("gives card(s) to a player who correctly asks another player who asks "+
     " a specific rank") do
-      game.play_turn(player1, player2, "3")
+      game.play_turn(player2, "3")
       expect(player1.has_card?(Card.new("3", "S"))).to(eq(true))
     end
 
     it("removes a card from the hand of a player who gets asked for a card of "+
     "a rank they have") do
-      game.play_turn(player1, player2, "3")
+      game.play_turn(player2, "3")
       expect(player2.has_card?(Card.new("3", "S"))).to(eq(false))
     end
 
-    it("returns the card(s) that the turn_player recieved in the first "+
-    "element of an array") do
-      turn_result_cards = game.play_turn(player1, player2, "3")[0]
+    it("returns the card(s) that the turn_player recieved") do
+      turn_result_cards = game.play_turn(player2, "3").cards
       expect(turn_result_cards).to(eq([Card.new("3", "S")]))
     end
 
-    it("returns the name of the player that gave the turn_player a card in "+
-    "the second element of an array") do
-      turn_result_source = game.play_turn(player1, player2, "3")[1]
+    it("returns the name of the player that gave the turn_player a card") do
+      turn_result_source = game.play_turn(player2, "3").source_name
       expect(turn_result_source).to(eq("Player 2"))
     end
 
     it("returns 'the deck' as the source of the recieved card if it didn't "+
     "come from a player") do
-      turn_result_source = game.play_turn(player1, player2, "2")[1]
+      turn_result_source = game.play_turn(player2, "2").source
       expect(turn_result_source).to(eq("the deck"))
     end
 
     it("gives a card from the deck to a player asking another player for a "+
     "card of a rank that other player doesn't have") do
-      game.play_turn(player1, player2, "2")
+      game.play_turn(player2, "2")
       expect(player1.has_card?(Card.new("4", "C"))).to(eq(true))
     end
   end
@@ -130,45 +129,30 @@ describe "Game" do
       game.add_player(player2)
     end
     it("takes card from a player if they have a card of a rank they are asked for") do
-      game.play_turn(player1, player2, "3")
+      game.play_turn(player2, "3")
       expect(player2.has_card?(Card.new("3", "S"))).to(eq(false))
     end
     it("gives card(s) to a player if they ask another player for cards of a "+
   " rank and they have them") do
-      game.play_turn(player1, player2, "3")
+      game.play_turn(player2, "3")
       expect(player1.has_card?(Card.new("3", "S"))).to(eq(true))
     end
     it("makes a player draw a card if they ask another player for a card and "+
     " the other player doesn't have a card of that rank") do
       game.deck.send(:set_cards, [Card.new("4", "C")])
-      game.play_turn(player1, player2, "2")
+      game.play_turn(player2, "2")
       expect(player1.has_card?(Card.new("4", "C"))).to(eq(true))
     end
     it("doesn't make the player draw a card if they get a card from a player") do
       game.deck.send(:set_cards, [Card.new("4", "C")])
-      game.play_turn(player1, player2, "3")
+      game.play_turn(player2, "3")
       expect(player1.has_card?(Card.new("3", "S"))).to(eq(true))
       expect(player1.has_card?(Card.new("3", "D"))).to(eq(true))
       expect(player1.has_card?(Card.new("4", "C"))).to(eq(false))
     end
-    it("returns a list of card(s) the player recieved") do
-      result_cards = game.play_turn(player1, player2, "3")[0]
-      expect(result_cards).to(eq([Card.new("3", "S"), Card.new("3", "D")]))
-    end
-    it("returns the card(s) in an array") do
-      result_cards = game.play_turn(player1, player2, "K")[0]
-      expect(result_cards.is_a?(Array)).to(eq(true))
-      result_cards = game.play_turn(player1, player2, "2")[0]
-      expect(result_cards.is_a?(Array)).to(eq(true))
-    end
-    it("returns the player that gave the cards if the source of "+
-    "the cards wasn't the deck") do
-      result_source = game.play_turn(player1, player2, "3")[1]
-      expect(result_source).to(eq("Player 2"))
-    end
-    it("returns 'the deck' as the source if the source wasn't a player") do
-      result_source = game.play_turn(player1, player2, "2")[1]
-      expect(result_source).to(eq("the deck"))
+    it("returns a RoundResult object") do
+      round_result = game.play_turn(player2, "3")
+      expect(round_result).to(be_a(RoundResult))
     end
   end
 end
