@@ -130,7 +130,7 @@ RSpec.describe Server do
     let(:session1) {Capybara::Session.new(:selenium_chrome_headless, Server.new)}
     let(:session2) {Capybara::Session.new(:selenium_chrome_headless, Server.new)}
 
-    before(:each) do
+    before(:each, :js) do
       [session1, session2].each_with_index do |session, index|
         session.visit '/'
         session.fill_in :name, with: "Player #{index + 1}"
