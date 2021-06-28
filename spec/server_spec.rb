@@ -85,6 +85,8 @@ RSpec.describe Server do
       session1.click_on "Try to Take Turn"
     end
 
+
+
     it("displays the cards in the player's hand") do
       expect(session1).to have_content("2 of Diamonds")
       take_turn(session1, "2 of Diamonds", "1")
@@ -123,7 +125,7 @@ RSpec.describe Server do
     it("does not display the player using the page") do
       expect(session1).to_not have_content("Player 1")
     end
-    
+
     xit("displays information about the previous turn") do
       take_turn(session1, "2 of Diamonds", "1")
       session1.click_on("Ok")
@@ -166,6 +168,7 @@ RSpec.describe Server do
       session1.click_on "Try to Take Turn"
       session1.choose("1")
     end
+
     it("allows users to ask for/get a card from another player") do
       take_turn(session1, "3 of Diamonds", "1")
       session1.click_on "Ok"
@@ -173,22 +176,26 @@ RSpec.describe Server do
       expect(Server.game.players[0].has_card?(Card.new("3", "S"))).to(eq(true))
       expect(Server.game.players[1].has_card?(Card.new("3", "S"))).to(eq(false))
     end
+
     it("directs players to a turn_result page") do
       take_turn(session1, "3 of Diamonds", "1")
       expect(session1).to(have_content("Turn Results"))
     end
+
     it("has the user draw from the deck if the player they ask don't have "+
     "cards of the specified rank") do
       session1.choose("2 of Diamonds")
       session1.click_on("Take Turn")
       expect(Server.game.players[0].has_card?(Card.new("7", "H"))).to(eq(true))
     end
+
     it("lets the user go again if the other player has a card of the rank they "+
     "want") do
       take_turn(session1, "3 of Diamonds", "1")
       session1.click_on("Ok")
       expect(session1).to(have_content("Take Your Turn"))
     end
+
     it("doesn't let the user go again if the other player doesn't have a card "+
     "of the rank they ask for") do
       session1.choose("2 of Diamonds")
@@ -196,10 +203,12 @@ RSpec.describe Server do
       session1.click_on("Ok")
       expect(session1).to(have_content("Try to Take Turn"))
     end
+
     it("does not increment_turn_counter if the player makes a correct guess") do
       take_turn(session1, "3 of Diamonds", "1")
       expect(Server.game.turn_player).to(eq(Server.game.players[0]))
     end
+    
     it("increments turn_counter if the player makes an incorrect guess") do
       take_turn(session1, "2 of Diamonds", "1")
       expect(Server.game.turn_player).to(eq(Server.game.players[1]))
