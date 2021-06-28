@@ -162,11 +162,14 @@ RSpec.describe Server do
   context 'asking for cards from another player' do
     before(:each) do
       Server.game.players[0].set_hand([Card.new("2", "D"), Card.new("3", "D"), Card.new("K", "S")])
-      Server.game.players[1].set_hand([Card.new("3", "S")])
+      Server.game.players[1].set_hand([Card.new("3", "S"), Card.new("K", "D"), Card.new("K", "H")])
       Server.game.deck.send(:set_cards, [Card.new("7", "H")])
       session1.click_on "Try to Take Turn"
       session1.choose("1")
     end
+
+    let(:player1) {Server.game.players[0]}
+    let(:player2) {Server.game.players[1]}
 
     it("doesn't change the displayed suit of cards a player gets from another player") do
       take_turn(session1, "3 of Diamonds", "1")
@@ -177,11 +180,21 @@ RSpec.describe Server do
 
     it("doesn't change the suit of cards recieved from another player") do
       player1 = Server.game.players[0]
-      take_turn(session1, "3 of Diamonds", "1")
+      take_turn(session1, "King of Spades", "1")
       session1.click_on("Ok")
-      rank_three_cards = player1.hand.select {|card| card.rank == "3"}
+      rank_three_cards = player1.hand.select {|card| card.rank == "K"}
       rank_three_suits = rank_three_cards.map(&:suit)
-      expect(rank_three_suits.sort).to(eq(["D", "S"]))
+      expect(rank_three_suits.sort).to(eq(["D", "H", "S"]))
+    end
+
+    it("doesn't alter any of the player's previous cards after getting one " +
+      "from the deck") do
+      take_turn(session1, "2 of Diamonds", "1")
+      session1.click_on("Ok")
+      player1.hand.sort_by!(&:rank)
+      expected_cards = [Card.new("2", "D"), Card.new("3", "D"), Card.new("7", "H"),
+      Card.new("K", "S")]
+      expect(player1.hand).to(eq(expected_cards))
     end
 
     it("allows users to ask for/get a card from another player") do
@@ -233,25 +246,27 @@ RSpec.describe Server do
   context 'turn results page' do
     before(:each) do
       Server.game.players[0].set_hand([Card.new("2", "D"), Card.new("3", "D"), Card.new("K", "C"), Card.new("K", "S")])
-      Server.game.players[1].set_hand([Card.new("3", "S"), Card.new("K", "D")])
+      Server.game.players[1].set_hand([Card.new("3", "S"), Card.new("K", "D"), Card.new("K", "H")])
       Server.game.deck.send(:set_cards, [Card.new("Q", "H")])
       session1.click_on("Try to Take Turn")
     end
+
     it 'has a button that takes user back to waiting page' do
       take_turn(session1, "2 of Diamonds", "1")
       session1.click_on("Ok")
       expect(session1).to(have_content("Try to Take Turn"))
     end
+
     it ('has a button that takes the user back to the take_turn page, when '+
     'needed') do
       take_turn(session1, "3 of Diamonds", "1")
       session1.click_on("Ok")
       expect(session1).to(have_content("Take Your Turn"))
     end
+
     it ("displays a message about what card(s) the player took from another") do
       take_turn(session1, "3 of Diamonds", "1")
       expect(session1).to(have_content("You took 1 3(s) from Player 2"))
-      #binding.pry
     end
   end
 
