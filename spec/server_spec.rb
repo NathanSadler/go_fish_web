@@ -335,6 +335,7 @@ RSpec.describe Server do
     before(:each) do
       player1.set_hand([Card.new("K", "D")])
       player2.set_hand([Card.new("4", "S")])
+      Server.game.deck.send(:set_cards, [Card.new("7", "C")])
       session1.click_on "Try to Take Turn"
       take_turn(session1, "King of Diamonds", "1")
     end
