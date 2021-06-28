@@ -1,6 +1,8 @@
 h1 Turn Results
 p = turn_result.hidden_message
-- if turn_result.matched_rank?
+- if game_over
+  a href="/game_results" Ok
+- elsif turn_result.matched_rank?
   a href="/take_turn" Ok
 - else
   a href="/waiting_room" Ok

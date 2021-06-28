@@ -92,7 +92,8 @@ class Server < Sinatra::Base
 
   get '/turn_results' do
     turn_result = session[:turn_result]
-    slim :turn_results, locals: {turn_result: turn_result}
+    is_over = self.class.game.over?
+    slim :turn_results, locals: {turn_result: turn_result, game_over: is_over}
   end
 
   get '/:slug' do
