@@ -140,6 +140,14 @@ describe "Game" do
       expect(player1.has_card?(Card.new("3", "S"))).to(eq(true))
     end
 
+    it("doesn't duplicate cards from the deck when a player draws a card") do
+      game.play_turn(player2, "2")
+      player1.hand.sort_by!(&:rank)
+      expected_cards = [Card.new("2", "D"), Card.new("3", "D"),
+        Card.new("4", "C"), Card.new("K", "S")]
+      expect(player1.hand).to(eq(expected_cards))
+    end
+
     it("doesn't duplicate cards a player recieves from another player") do
       game.play_turn(player2, "3")
       rank_three_cards = player1.hand.select {|card| card.rank == "3"}
