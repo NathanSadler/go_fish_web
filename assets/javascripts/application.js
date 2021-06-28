@@ -10,4 +10,4 @@ channel.bind('game-changed', function('data') {
   if(window.location.pathname === '/waiting_room') {
     window.location.reload();
   }
-})
+});
