@@ -94,6 +94,12 @@ describe 'Player' do
       player.add_card_to_hand(test_card)
       expect(player.hand).to(eq([Card.new( "9",  "D"), test_card]))
     end
+
+    it("returns the cards that got added to the player's hand") do
+      cards_to_add = [Card.new("3", "S"), Card.new("4", "S")]
+      added_cards = player.add_card_to_hand(cards_to_add)
+      expect(added_cards).to(eq(cards_to_add))
+    end
   end
 
   context('#remove_card_from_hand') do
@@ -184,7 +190,6 @@ describe 'Player' do
       expect(player.score).to(eq(4))
     end
   end
-
 
   context('#has_card_with_rank?') do
     before(:each) do

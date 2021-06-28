@@ -91,6 +91,7 @@ RSpec.describe Server do
       take_turn(session1, "2 of Diamonds", "1")
       session1.click_on("Ok")
       session2.click_on "Try to Take Turn"
+      binding.pry
       expect(session2).to(have_content("3 of Spades"))
     end
 
@@ -287,6 +288,13 @@ RSpec.describe Server do
     it "doesn't disply other players' names in bold" do
       expect(session2).to_not have_css('b', text: 'Player 1')
       expect(session1).to_not have_css('b', text: 'Player 2')
+    end
+  end
+
+  context "game ending" do
+    xit("redirects all players to the game results when no players have any
+      cards left and there are no cards in the deck") do
+
     end
   end
 
