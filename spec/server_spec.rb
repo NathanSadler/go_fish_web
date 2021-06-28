@@ -91,7 +91,6 @@ RSpec.describe Server do
       take_turn(session1, "2 of Diamonds", "1")
       session1.click_on("Ok")
       session2.click_on "Try to Take Turn"
-      binding.pry
       expect(session2).to(have_content("3 of Spades"))
     end
 
