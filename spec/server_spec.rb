@@ -295,7 +295,9 @@ RSpec.describe Server do
   context "game ending" do
     xit("redirects all players to the game results when no players have any
       cards left and there are no cards in the deck") do
-
+      Server.players[0].set_hand([Card.new("3", "C"), Card.new("3", "D"),
+        Card.new("3", "H")])
+      Server.players[1].set_hand([Card.new("3", "S")])
     end
   end
 

@@ -161,7 +161,7 @@ describe "Game" do
       expect(player1.hand).to(eq(expected_cards))
     end
 
-    it("doesn't duplicate cards a player recieves from another player") do
+    it("doesn't duplicate cards that a player recieves from another player") do
       game.play_turn(player2, "3")
       rank_three_cards = player1.hand.select {|card| card.rank == "3"}
       expect(rank_three_cards.length).to(eq(3))
