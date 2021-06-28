@@ -294,25 +294,38 @@ RSpec.describe Server do
 
   context "game ending" do
     let(:game) {Server.game}
+    let(:game_result_header) {"Game Over"}
+    let(:session1) {Capybara::Session.new(:selenium_chrome_headless, Server.new)}
+    let(:session2) {Capybara::Session.new(:selenium_chrome, Server.new)}
+
+    before(:each, :js) do
+      [session1, session2].each_with_index do |session, index|
+        session.visit '/'
+        session.fill_in :name, with: "Player #{index + 1}"
+        session.click_on 'Join'
+      end
+      [session1, session2].each {|session| session.click_on 'Proceed to Game'}
+    end
+
     before(:each) do
       game.players[0].set_hand([Card.new("3", "C"), Card.new("3", "D"),
         Card.new("3", "H")])
       game.players[1].set_hand([Card.new("3", "S")])
       game.deck.send(:set_cards, [])
       session1.click_on("Try to Take Turn")
-      take_turn(session1, "3 of Clubs", "1")
-
     end
 
     it("redirects players in the waiting room to the game results when the "+
       "game is over") do
-      expect(session2).to(have_content("Game Over"))
+      take_turn(session1, "3 of Clubs", "1")
+      expect(session2).to(have_content(game_result_header))
     end
 
     it("directs the player playing the last turn to the game results after "+
     "viewing the results of the last turn") do
+      take_turn(session1, "3 of Clubs", "1")
       session1.click_on("Ok")
-      expect(session1).to(have_content("Game Over"))
+      expect(session1).to(have_content(game_result_header))
     end
   end
 
