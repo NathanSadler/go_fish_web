@@ -41,10 +41,6 @@ RSpec.describe Server do
     Server.reset_game
   end
 
-  # after(:each) do
-  #
-  # end
-
   context('user enters their name and waits for the game to start') do
     it("takes the user to a waiting page") do
       test_session = Capybara::Session.new(:rack_test, Server.new)
