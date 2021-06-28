@@ -61,6 +61,15 @@ class Player
     cards_to_remove
   end
 
+  def find_book_ranks
+    occurences = {}
+    hand.each do |card|
+      occurences[card.rank] ? occurences[card.rank] += 1 : occurences[card.rank] = 1
+    end
+    occurences.keys.select {|rank| occurences[rank] == 4}
+  end
+
+
   def remove_card_from_hand(card)
     if self.hand.include?(card)
       set_hand(self.hand.reject {|hand_card| hand_card == card})
