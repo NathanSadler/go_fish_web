@@ -25,6 +25,31 @@ describe "Game" do
     end
   end
 
+  context '#over?' do
+    before(:each) do
+      2.times {game.add_player(Player.new)}
+    end
+    let(:player1) {game.players[0]}
+    let(:player2) {game.players[1]}
+
+    it("is true if no players have any cards and the deck is empty") do
+      [player1, player2].each {|player| player.set_hand([])}
+      game.deck.send(:set_cards, [])
+      expect(game.over?).to(be(true))
+    end
+
+    it("is false if any players have more than one card") do
+      game.deal_cards
+      player1.set_hand([])
+      game.deck.send(:set_cards, [])
+      expect(game.over?).to(be(false))
+    end
+
+    it("is false if the deck has any cards in it") do
+      [player1, player2].each {|player| player.set_hand([])}
+      expect(game.over?).to(be(false))
+    end
+  end
 
   context '#play_turn' do
     before(:each) do

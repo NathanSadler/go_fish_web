@@ -21,6 +21,12 @@ class Game
     players[turn_counter]
   end
 
+  def over?
+    player_card_counts = players.map {|player| player.hand.length}
+    reduced_card_count = player_card_counts.reduce(0) {|sum, card_count| sum += card_count}
+    (reduced_card_count == 0) && (deck.cards_in_deck == 0)
+  end
+
   def deal_cards
     players.length > 3 ? (card_deal_count = 5) : (card_deal_count = 7)
     card_deal_count.times do
