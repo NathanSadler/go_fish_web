@@ -69,7 +69,8 @@ class Server < Sinatra::Base
     current_game = self.class.game
     if !current_game.deck.cards_dealt?
       current_game.deck.shuffle
-      current_game.deal_cards end
+      current_game.deal_cards
+    end
     redirect('/wait_to_start') if current_game.players.length < current_game.min_players
     slim :waiting_room, locals: { game: self.class.game, current_player: session[:current_player] }
   end
