@@ -13,6 +13,7 @@ require_relative '../lib/player'
 def take_turn(session, card, player)
   session.choose(card)
   session.choose(player)
+  #binding.pry
   session.click_on("Take Turn")
 end
 
@@ -84,8 +85,6 @@ RSpec.describe Server do
       Server.game.players[1].set_hand([Card.new("3", "S")])
       session1.click_on "Try to Take Turn"
     end
-
-
 
     it("displays the cards in the player's hand") do
       expect(session1).to have_content("2 of Diamonds")
@@ -169,6 +168,22 @@ RSpec.describe Server do
       session1.choose("1")
     end
 
+    it("doesn't change the displayed suit of cards a player gets from another player") do
+      take_turn(session1, "3 of Diamonds", "1")
+      session1.click_on("Ok")
+      expect(session1.assert_selector("input[id='3-S']", count: 1)).to(eq(true))
+      expect(session1.assert_selector("input[id='3-D']", count: 1)).to(eq(true))
+    end
+
+    it("doesn't change the suit of cards recieved from another player") do
+      player1 = Server.game.players[0]
+      take_turn(session1, "3 of Diamonds", "1")
+      session1.click_on("Ok")
+      rank_three_cards = player1.hand.select {|card| card.rank == "3"}
+      rank_three_suits = rank_three_cards.map(&:suit)
+      expect(rank_three_suits.sort).to(eq(["D", "S"]))
+    end
+
     it("allows users to ask for/get a card from another player") do
       take_turn(session1, "3 of Diamonds", "1")
       session1.click_on "Ok"
@@ -208,7 +223,7 @@ RSpec.describe Server do
       take_turn(session1, "3 of Diamonds", "1")
       expect(Server.game.turn_player).to(eq(Server.game.players[0]))
     end
-    
+
     it("increments turn_counter if the player makes an incorrect guess") do
       take_turn(session1, "2 of Diamonds", "1")
       expect(Server.game.turn_player).to(eq(Server.game.players[1]))
@@ -219,6 +234,7 @@ RSpec.describe Server do
     before(:each) do
       Server.game.players[0].set_hand([Card.new("2", "D"), Card.new("3", "D"), Card.new("K", "C"), Card.new("K", "S")])
       Server.game.players[1].set_hand([Card.new("3", "S"), Card.new("K", "D")])
+      Server.game.deck.send(:set_cards, [Card.new("Q", "H")])
       session1.click_on("Try to Take Turn")
     end
     it 'has a button that takes user back to waiting page' do
@@ -235,6 +251,7 @@ RSpec.describe Server do
     it ("displays a message about what card(s) the player took from another") do
       take_turn(session1, "3 of Diamonds", "1")
       expect(session1).to(have_content("You took 1 3(s) from Player 2"))
+      #binding.pry
     end
   end
 
