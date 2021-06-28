@@ -16,7 +16,7 @@ describe "Game" do
     Player.clear_players
   end
 
-  context '.add_player' do
+  context '#add_player' do
     it "adds a Player to the game" do
       game = Game.new
       player = Player.new
@@ -26,7 +26,7 @@ describe "Game" do
   end
 
 
-  context '.play_turn' do
+  context '#play_turn' do
     before(:each) do
       [1, 2].each {|time| game.add_player(Player.new("Player #{time}"))}
       game.players[0].set_hand([Card.new("2", "D"), Card.new("3", "D"), Card.new("K", "S")])
@@ -71,7 +71,7 @@ describe "Game" do
     end
   end
 
-  context '.active_player' do
+  context '#active_player' do
     it("returns the player whose turn it is") do
       [1, 2, 3].each {|time| game.add_player(Player.new("Player #{time}"))}
       game.increment_turn_counter
@@ -87,6 +87,7 @@ describe "Game" do
       # Make sure they didn't somehow get the same cards, either
       expect(game.players[0].hand == game.players[1].hand).to(eq(false))
     end
+
     it("gives 5 cards to each player if there are 4 or 5 players") do
       5.times {game.add_player(Player.new)}
       game.deal_cards
@@ -94,12 +95,14 @@ describe "Game" do
       # Make sure they didn't somehow get the same cards, either
       expect(game.players[0].hand == game.players[1].hand).to(eq(false))
     end
+
     it("sets the deck's cards_dealt variable to true") do
       3.times {game.add_player(Player.new)}
       game.deal_cards
       expect(game.deck.cards_dealt?).to(eq(true))
     end
   end
+
   context '#turn_player' do
     it "returns the player whose turn it is" do
       expect(game.turn_player).to(eq(game.players[0]))
@@ -110,10 +113,12 @@ describe "Game" do
     before(:each) do
       2.times {game.add_player(Player.new("Test Player"))}
     end
+
     it "increases the turn counter by 1" do
       game.increment_turn_counter
       expect(game.turn_player).to(eq(game.players[1]))
     end
+
     it "goes back to zero if it reaches the last player" do
       2.times {game.increment_turn_counter}
       expect(game.turn_player).to(eq(game.players[0]))

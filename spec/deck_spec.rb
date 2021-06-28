@@ -36,7 +36,7 @@ describe 'Deck' do
     end
   end
 
-  context('.set_cards') do
+  context('#set_cards') do
     it("sets the cards in the deck") do
       new_cards = [Card.new("A", "S"), Card.new("A", "C")]
       test_deck.send(:set_cards, new_cards)
@@ -44,14 +44,14 @@ describe 'Deck' do
     end
   end
 
-  context('.cards_in_deck') do
+  context('#cards_in_deck') do
     it("returns the number of cards in the deck") do
       test_deck.draw_card
       expect(test_deck.cards_in_deck).to(eq(51))
     end
   end
 
-  context('.draw_card') do
+  context('#draw_card') do
     it("removes a card from the top of the deck and returns it") do
       passed_cards = [Card.new("4", "H"), Card.new("7", "C")]
       rigged_deck = Deck.new(passed_cards)

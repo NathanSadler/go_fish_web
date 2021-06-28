@@ -275,15 +275,18 @@ RSpec.describe Server do
       expect(session2).to have_content('Player 1')
       expect(session2).to have_content('Player 2')
     end
+
     it 'updates the list when a user refreshes' do
       session1.driver.refresh
       expect(session1).to have_content('Player 1')
       expect(session1).to have_content('Player 2')
     end
+
     it "displays the user's name in bold text" do
       expect(session1).to have_css('b', text: 'Player 1')
       expect(session2).to have_css('b', text: 'Player 2')
     end
+
     it "doesn't disply other players' names in bold" do
       expect(session2).to_not have_css('b', text: 'Player 1')
       expect(session1).to_not have_css('b', text: 'Player 2')
@@ -312,6 +315,7 @@ RSpec.describe Server do
       session2.click_on "Try to Take Turn"
       expect(session2).to have_content("Take Your Turn")
     end
+    
     it "redirects players to the waiting_room page if it isn't their turn" do
       session1.click_on "Ok"
       session1.click_on "Try to Take Turn"

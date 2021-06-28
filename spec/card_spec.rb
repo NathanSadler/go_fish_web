@@ -19,8 +19,8 @@ describe Card do
 
   end
 
-  context('description') do
-    it("returns a ring describing the card") do
+  context('#description') do
+    it("returns a string describing the card") do
       test_card = Card.new("Q", "S")
       expect(test_card.description).to(eq("Queen of Spades"))
     end
@@ -35,7 +35,7 @@ describe Card do
     end
   end
 
-  context('==') do
+  context('#==') do
     let(:card) {Card.new("3", "H")}
 
     it("is true if the other card has the same rank and suit") do
