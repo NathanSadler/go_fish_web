@@ -157,6 +157,34 @@ describe 'Player' do
     end
   end
 
+  context('#lay_down_books') do
+    before(:each) do
+      book = ["S", "D", "H", "C"].map {|suit| Card.new( "7",  suit)}
+      book_b = ["S", "D", "H", "C"].map {|suit| Card.new( "9",  suit)}
+      player.add_card_to_hand(book)
+      player.add_card_to_hand(book_b)
+      player.add_card_to_hand(Card.new("8", "S"))
+    end
+
+    it("removes every book from the player's hand") do
+      player.lay_down_books
+      expect(player.hand).to(eq([Card.new("8", "S")]))
+    end
+
+    it("increases the player's score by one for every book they have") do
+      player.lay_down_books
+      expect(player.score).to(eq(2))
+    end
+  end
+
+  context('#increase_score') do
+    it("increases the player's score by a specified amount") do
+      player.increase_score(1)
+      player.increase_score(3)
+      expect(player.score).to(eq(4))
+    end
+  end
+
 
   context('#has_card_with_rank?') do
     before(:each) do

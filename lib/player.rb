@@ -1,11 +1,12 @@
 class Player
   @@player_count = 0
   @@player_hash = {}
-  attr_reader :name, :hand, :id
+  attr_reader :name, :hand, :id, :score
   def initialize(name = "Player")
     @name = name
     @hand = []
     @id = @@player_count
+    @score = 0
     @@player_count += 1
     @@player_hash.store(@id, self)
   end
@@ -69,7 +70,6 @@ class Player
     occurences.keys.select {|rank| occurences[rank] == 4}
   end
 
-
   def remove_card_from_hand(card)
     if self.hand.include?(card)
       set_hand(self.hand.reject {|hand_card| hand_card == card})
@@ -79,9 +79,27 @@ class Player
     end
   end
 
+  def lay_down_books
+    book_ranks = find_book_ranks
+    books = hand.select {|card| book_ranks.include?(card.rank)}
+    increase_score(books.length / 4)
+    books.each do |card|
+      remove_card_from_hand(card)
+    end
+  end
+
   def draw_card(deck)
     taken_card = deck.draw_card
     add_card_to_hand(taken_card)
     taken_card
+  end
+
+  def increase_score(points)
+    set_score(score + points)
+  end
+
+  private
+  def set_score(score)
+    @score = score
   end
 end
