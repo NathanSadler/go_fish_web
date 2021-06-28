@@ -32,7 +32,6 @@ class Game
   def play_turn(asked_player, card_rank)
     if asked_player.has_card_with_rank?(card_rank)
       recieved_cards, card_source = [turn_player.add_card_to_hand(asked_player.remove_cards_with_rank(card_rank)), asked_player]
-      #turn_player.add_card_to_hand(recieved_cards)
     else
       recieved_cards, card_source = [turn_player.draw_card(deck), "the deck"]
     end
