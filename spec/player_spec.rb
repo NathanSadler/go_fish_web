@@ -157,7 +157,7 @@ describe 'Player' do
       expect(player.has_card?(Card.new("8", "H"))).to(eq(true))
       expect(test_deck.cards).to(eq([Card.new("8", "C")]))
     end
-    
+
     it("returns the card the player took") do
       taken_card = player.draw_card(test_deck)
       expect(taken_card).to(eq(Card.new("8", "H")))
@@ -209,9 +209,11 @@ describe 'Player' do
     before(:each) do
       player.add_card_to_hand(Card.new("7", "K"))
     end
+    
     it("is true if the player has a card with the specified rank") do
       expect(player.has_card_with_rank?("7")).to(eq(true))
     end
+
     it("is false if the player doesn't have a card with the specified rank") do
       expect(player.has_card_with_rank?("8")).to(eq(false))
     end
