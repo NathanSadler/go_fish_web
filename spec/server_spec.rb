@@ -293,11 +293,26 @@ RSpec.describe Server do
   end
 
   context "game ending" do
-    xit("redirects all players to the game results when no players have any
-      cards left and there are no cards in the deck") do
-      Server.players[0].set_hand([Card.new("3", "C"), Card.new("3", "D"),
+    let(:game) {Server.game}
+    before(:each) do
+      game.players[0].set_hand([Card.new("3", "C"), Card.new("3", "D"),
         Card.new("3", "H")])
-      Server.players[1].set_hand([Card.new("3", "S")])
+      game.players[1].set_hand([Card.new("3", "S")])
+      game.deck.send(:set_cards, [])
+      session1.click_on("Try to Take Turn")
+      take_turn(session1, "3 of Clubs", "1")
+
+    end
+
+    it("redirects players in the waiting room to the game results when the "+
+      "game is over") do
+      expect(session2).to(have_content("Game Over"))
+    end
+
+    it("directs the player playing the last turn to the game results after "+
+    "viewing the results of the last turn") do
+      session1.click_on("Ok")
+      expect(session1).to(have_content("Game Over"))
     end
   end
 
