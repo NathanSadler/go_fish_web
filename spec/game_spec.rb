@@ -123,26 +123,43 @@ describe "Game" do
     [:player1, :player2].each_with_index {|player, index| let(player){Player.new("Player #{index+1}")}}
     before(:each) do
       player1.set_hand([Card.new("2", "D"), Card.new("3", "D"), Card.new("K", "S")])
-      player2.set_hand([Card.new("3", "S"), Card.new("K", "C"), Card.new("3", "D")])
+      player2.set_hand([Card.new("3", "S"), Card.new("K", "C"), Card.new("3", "H")])
       game.deck.send(:set_cards, [Card.new("4", "C")])
       game.add_player(player1)
       game.add_player(player2)
     end
+
     it("takes card from a player if they have a card of a rank they are asked for") do
       game.play_turn(player2, "3")
       expect(player2.has_card?(Card.new("3", "S"))).to(eq(false))
     end
+
     it("gives card(s) to a player if they ask another player for cards of a "+
   " rank and they have them") do
       game.play_turn(player2, "3")
       expect(player1.has_card?(Card.new("3", "S"))).to(eq(true))
     end
+
+    it("doesn't duplicate cards a player recieves from another player") do
+      game.play_turn(player2, "3")
+      rank_three_cards = player1.hand.select {|card| card.rank == "3"}
+      expect(rank_three_cards.length).to(eq(3))
+    end
+
+    it("doesn't alter the suits of cards recieved from another player") do
+      game.play_turn(player2, "3")
+      rank_three_cards = player1.hand.select {|card| card.rank == "3"}
+      rank_three_suits = rank_three_cards.map(&:suit)
+      expect(rank_three_suits.sort).to(eq(["D", "H", "S"]))
+    end
+
     it("makes a player draw a card if they ask another player for a card and "+
     " the other player doesn't have a card of that rank") do
       game.deck.send(:set_cards, [Card.new("4", "C")])
       game.play_turn(player2, "2")
       expect(player1.has_card?(Card.new("4", "C"))).to(eq(true))
     end
+
     it("doesn't make the player draw a card if they get a card from a player") do
       game.deck.send(:set_cards, [Card.new("4", "C")])
       game.play_turn(player2, "3")
@@ -150,6 +167,7 @@ describe "Game" do
       expect(player1.has_card?(Card.new("3", "D"))).to(eq(true))
       expect(player1.has_card?(Card.new("4", "C"))).to(eq(false))
     end
+
     it("returns a RoundResult object") do
       round_result = game.play_turn(player2, "3")
       expect(round_result).to(be_a(RoundResult))
