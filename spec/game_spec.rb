@@ -73,8 +73,9 @@ describe "Game" do
 
   context '.active_player' do
     it("returns the player whose turn it is") do
-      # TODO: finish this test
       [1, 2, 3].each {|time| game.add_player(Player.new("Player #{time}"))}
+      game.increment_turn_counter
+      expect(game.turn_player).to(eq(game.players[1]))
     end
   end
 
@@ -119,7 +120,7 @@ describe "Game" do
     end
   end
 
-  context '#take_turn' do
+  context '#play_turn' do
     [:player1, :player2].each_with_index {|player, index| let(player){Player.new("Player #{index+1}")}}
     before(:each) do
       player1.set_hand([Card.new("2", "D"), Card.new("3", "D"), Card.new("K", "S")])
@@ -127,6 +128,13 @@ describe "Game" do
       game.deck.send(:set_cards, [Card.new("4", "C")])
       game.add_player(player1)
       game.add_player(player2)
+    end
+
+    it("has the player lay down their cards at the end of their turn") do
+      player1.add_card_to_hand(Card.new("3", "C"))
+      game.deck.send(:set_cards, [Card.new("4", "C")])
+      game.play_turn(player2, "3")
+      expect(player1.hand).to(eq([Card.new("2", "D"), Card.new("K", "S")]))
     end
 
     it("takes card from a player if they have a card of a rank they are asked for") do
