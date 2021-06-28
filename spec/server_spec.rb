@@ -84,6 +84,7 @@ RSpec.describe Server do
       Server.game.players[1].set_hand([Card.new("3", "S")])
       session1.click_on "Try to Take Turn"
     end
+
     it("displays the cards in the player's hand") do
       expect(session1).to have_content("2 of Diamonds")
       take_turn(session1, "2 of Diamonds", "1")
@@ -91,30 +92,38 @@ RSpec.describe Server do
       session2.click_on "Try to Take Turn"
       expect(session2).to(have_content("3 of Spades"))
     end
+
     it("doesn't display more cards than the user has") do
       expect(session1.assert_selector('[name=card]', count: 3)).to(eq(true))
     end
+
     it("doesn't display list more players than there actually are") do
       expect(session1.assert_selector('[name=player_id]', count: 1)).to(eq(true))
     end
+
     it("displays new cards in the player's hand if they got any since last "+
     "time they were on the page") do
       take_turn(session1, "3 of Diamonds", "1")
       session1.click_on("Ok")
       expect(session1).to(have_content("3 of Spades"))
     end
+
     it("lets users select a card") do
       expect {session1.choose("2 of Diamonds")}.to_not raise_error
     end
+
     it("doesn't display cards not in the player's hand") do
       expect(session1).to_not have_content("3 of Spades")
     end
+
     it("displays the other players") do
       expect(session1).to have_content("Player 2")
     end
+
     it("does not display the player using the page") do
       expect(session1).to_not have_content("Player 1")
     end
+    
     xit("displays information about the previous turn") do
       take_turn(session1, "2 of Diamonds", "1")
       session1.click_on("Ok")
