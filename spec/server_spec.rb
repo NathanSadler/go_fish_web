@@ -13,7 +13,6 @@ require_relative '../lib/player'
 def take_turn(session, card, player)
   session.choose(card)
   session.choose(player)
-  #binding.pry
   session.click_on("Take Turn")
 end
 
@@ -315,7 +314,7 @@ RSpec.describe Server do
       session2.click_on "Try to Take Turn"
       expect(session2).to have_content("Take Your Turn")
     end
-    
+
     it "redirects players to the waiting_room page if it isn't their turn" do
       session1.click_on "Ok"
       session1.click_on "Try to Take Turn"
