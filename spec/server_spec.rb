@@ -329,6 +329,15 @@ RSpec.describe Server do
       end
     end
 
+    it("lists each player's score") do
+      take_turn(session2, "3 of Spades", "0")
+      session2.click_on("Ok")
+      [session1, session2].each do |session|
+        expect(session).to(have_css('.game-result-player:first-child', text: "1 book(s)"))
+        expect(session).to(have_css('.game-result-player:nth-child(2)', text: "0 book(s)"))
+      end
+    end
+
   end
 
   context "game ending" do
