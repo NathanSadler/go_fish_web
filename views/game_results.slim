@@ -1,1 +1,6 @@
 h1 Game Over
+.flex.flex-col
+  - game.players.each do |player|
+    .game-result-player
+      p = player.name
+      p = player.score

@@ -291,8 +291,49 @@ RSpec.describe Server do
     end
   end
 
+  context "game results page" do
+    before(:each) do
+      Server.reset_game
+      Player.clear_players
+    end
+
+    let(:game) {Server.game}
+    let(:game_result_header) {"Game Over"}
+    let(:session1) {Capybara::Session.new(:selenium_chrome_headless, Server.new)}
+    let(:session2) {Capybara::Session.new(:selenium_chrome_headless, Server.new)}
+
+    before(:each) do
+      [session1, session2].each_with_index do |session, index|
+        session.visit '/'
+        session.fill_in :name, with: "Player #{index + 1}"
+        session.click_on 'Join'
+      end
+      [session1, session2].each {|session| session.click_on 'Proceed to Game'}
+    end
+
+    before(:each) do
+      game.players[0].set_hand([Card.new("3", "C"), Card.new("3", "D"),
+        Card.new("3", "H")])
+      game.players[1].set_hand([Card.new("3", "S")])
+      game.deck.send(:set_cards, [])
+      session1.click_on("Try to Take Turn")
+    end
+
+    it("lists the players in the order they placed in") do
+      take_turn(session1, "3 of Clubs", "1")
+      session1.click_on("Ok")
+      [session1, session2].each do |session|
+        expect(session).to(have_css('.game-result-player:first-child', text: "Player 1"))
+        expect(session).to(have_css('.game-result-player:nth-child(2)', text: "Player 2"))
+      end
+    end
+
+  end
+
   context "game ending" do
     before(:each) do
+
+
       Server.reset_game
       Player.clear_players
     end
@@ -328,7 +369,6 @@ RSpec.describe Server do
 
     it("directs the player playing the last turn to the game results after "+
     "viewing the results of the last turn", :js) do
-      #binding.pry
       take_turn(session1, "3 of Clubs", "1")
       session1.click_on("Ok")
       expect(session1).to(have_content(game_result_header))
