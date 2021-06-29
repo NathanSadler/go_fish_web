@@ -25,6 +25,10 @@ class Server < Sinatra::Base
     )
   end
 
+  def self.set_game(new_game)
+    @@game = new_game
+  end
+
   def self.reset_game
     @@game = nil
   end
@@ -63,6 +67,16 @@ class Server < Sinatra::Base
 
   get '/wait_to_start' do
     slim :wait_to_start
+  end
+
+  get '/create_game' do
+    slim :create_game
+  end
+
+  post '/create_game' do
+    binding.pry
+    self.class.set_game(Game.new(params[:minimum_players].to_i, params[:maximum_players].to_i, params[:maximum_bots].to_i))
+    redirect('/waiting_room')
   end
 
   get '/waiting_room' do

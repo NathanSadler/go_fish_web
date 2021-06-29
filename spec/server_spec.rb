@@ -59,10 +59,10 @@ RSpec.describe Server do
     before(:each) do
       Server.reset_game
       test_session.visit '/create_game'
+      binding.pry
     end
 
     it("lets users create a game with a specific number of players and bots") do
-      test_session.click_on("Create Game")
       create_game(test_session, "3", "3", "0")
       current_game = Server.game
       expect(current_game.min_players).to(eq(3))

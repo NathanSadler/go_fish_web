@@ -1,0 +1,14 @@
+h1 Create A New Game
+form action="/create_game" method="POST"
+
+
+  - selection_options = {:minimum_players => "Minimum Players", \
+  :maximum_players => "Maximum Players", :maximum_bots => "Maximum Bots"}
+
+  - selection_options.keys.each do |selection_key|
+    label for="#{selection_key}" = selection_options[selection_key]
+    select name="#{selection_key}" id="#{selection_key}"
+      - ("0".."7").each do |value|
+        option value="#{value}" = value
+
+  button type="submit" Create Game

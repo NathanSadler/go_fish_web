@@ -4,7 +4,7 @@ class Game
   attr_reader :max_players, :min_players, :move_pointer, :deck, :turn_counter, :saved_rounds
   attr_accessor :players
 
-  def initialize(max_players = 7, min_players = 2)
+  def initialize(max_players = 7, min_players = 2, max_bots = 0)
     @players = []
     @max_players = max_players
     @min_players = min_players
