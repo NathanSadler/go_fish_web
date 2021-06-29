@@ -110,7 +110,7 @@ RSpec.describe Server do
       expect(session2).to_not(have_content("Player 1 asked for 4(s) and took 1 4(s) from Player 2"))
       take_turn(session1, "4 of Diamonds", "1")
       session1.click_on("Ok")
-      expect(session2).to(have_content("Player 1 asked for 4(s) and took 1 4(s) from Player 2"))
+      expect(session2).to(have_content("Player 1 asked for 4s and took 1 4(s) from Player 2"))
     end
 
     it("displays the results in order", :js) do
