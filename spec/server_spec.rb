@@ -16,6 +16,18 @@ def take_turn(session, card, player)
   session.click_on("Take Turn")
 end
 
+def create_game(session, min_players, max_players, max_bots)
+  session.visit('/create_game')
+  fill_in_game_form(session, min_players, max_players, max_bots)
+  session.click_on("Create Game")
+end
+
+def fill_in_game_form(session, min_players, max_players, max_bots)
+  session.select(min_players.to_s, from: 'Minimum Players')
+  session.select(max_players.to_s, from: 'Maximum Players')
+  session.select(max_bots.to_s, from: "Maximum Bots")
+end
+
 RSpec.describe Server do
   # include Rack::Test::Methods
   include Capybara::DSL
@@ -39,6 +51,23 @@ RSpec.describe Server do
   after(:each) do
     Player.clear_players
     Server.reset_game
+  end
+
+  context('creating a game') do
+    let (:test_session) {Capybara::Session.new(:rack_test, Server.new)}
+
+    before(:each) do
+      Server.reset_game
+      test_session.visit '/game_creation'
+    end
+
+    it("lets users create a game with a specific number of players and bots") do
+      test_session.click_on("Create Game")
+      create_game(test_session, "3", "3", "0")
+      current_game = Server.game
+      expect(current_game.min_players).to(eq(3))
+      expect(current_game.max_players).to(eq(3))
+    end
   end
 
   context('user enters their name and waits for the game to start') do
