@@ -59,7 +59,6 @@ RSpec.describe Server do
     before(:each) do
       Server.reset_game
       test_session.visit '/create_game'
-      binding.pry
     end
 
     it("lets users create a game with a specific number of players and bots") do
@@ -67,6 +66,12 @@ RSpec.describe Server do
       current_game = Server.game
       expect(current_game.min_players).to(eq(3))
       expect(current_game.max_players).to(eq(3))
+    end
+
+    it("directs players away from the page if a game has been created") do
+      create_game(test_session, "3", "3", "0")
+      test_session.visit('/create_game')
+      expect(test_session.current_path).to(eq("/wait_to_start"))
     end
   end
 

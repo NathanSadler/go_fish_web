@@ -74,7 +74,6 @@ class Server < Sinatra::Base
   end
 
   post '/create_game' do
-    binding.pry
     self.class.set_game(Game.new(params[:minimum_players].to_i, params[:maximum_players].to_i, params[:maximum_bots].to_i))
     redirect('/waiting_room')
   end
