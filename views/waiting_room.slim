@@ -6,7 +6,10 @@ h1 Players
   - else
     li = player.name
 
+.flex.flex-col
 - game.saved_rounds.each do |saved_round|
-  
+  .round-result
+    = saved_round.public_message
+
 
 a href="/take_turn" Try to Take Turn

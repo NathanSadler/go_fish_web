@@ -89,6 +89,11 @@ describe "Game" do
       expect(turn_result_source).to(eq("the deck"))
     end
 
+    it("saves the results of the round") do
+      turn_result = game.play_turn(player2, "2")
+      expect(game.saved_rounds[0]).to(eq(turn_result))
+    end
+
     it("gives a card from the deck to a player asking another player for a "+
     "card of a rank that other player doesn't have") do
       game.play_turn(player2, "2")

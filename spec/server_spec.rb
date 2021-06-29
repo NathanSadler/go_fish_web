@@ -100,7 +100,7 @@ RSpec.describe Server do
 
     before(:each) do
       game.players[0].set_hand([Card.new("3", "C"), Card.new("3", "D"),
-        Card.new("3", "H"), Card.new("4", "D")], Card.new("9", "S"))
+        Card.new("3", "H"), Card.new("4", "D"), Card.new("9", "S")])
       game.players[1].set_hand([Card.new("3", "S"), Card.new("4", "C"), Card.new("7", "H")])
       game.deck.send(:set_cards, [Card.new("8", "S"), Card.new("10", "D")])
       session1.click_on("Try to Take Turn")
@@ -113,10 +113,15 @@ RSpec.describe Server do
       expect(session2).to(have_content("Player 1 took 1 4(s) from Player 2"))
     end
 
-    is("displays the results in order", :js) do
+    it("displays the results in order", :js) do
+      take_turn(session1, "4 of Diamonds", "1")
+      session1.click_on("Ok")
       take_turn(session1, "9 of Spades", "1")
       session1.click_on("Ok")
-
+      #binding.pry
+      expect(session2).to(have_css('.round-result:first-child',
+         text: "Player 1 asked for 4s and took 1 4(s) from Player 2"))
+      expect(session2).to(have_css('.round-result:nth-child(2)', text: "Player 1 asked for 9s and took 1 card(s) from the deck"))
     end
   end
 

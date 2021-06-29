@@ -49,7 +49,7 @@ class Game
       recieved_cards, card_source = [turn_player.draw_card(deck), "the deck"]
     end
     turn_player.lay_down_books
-    RoundResult.new(cards: recieved_cards, source: card_source, recieving_player: turn_player, expected_rank: card_rank)
+    save_round_result(RoundResult.new(cards: recieved_cards, source: card_source, recieving_player: turn_player, expected_rank: card_rank))
   end
 
   def increment_turn_counter
