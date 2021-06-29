@@ -15,6 +15,6 @@ channel.bind('game-changed', function(data) {
 channel.bind('game-over', function(data) {
   if(window.location.pathname === '/waiting_room') {
     window.location.pathname = '/game_results';
-    window.location.reload();  
+    window.location.reload();
   }
 });

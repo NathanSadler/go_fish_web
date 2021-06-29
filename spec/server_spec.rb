@@ -107,10 +107,10 @@ RSpec.describe Server do
     end
 
     it("displays the results of each turn as they happen", :js) do
-      expect(session2).to_not(have_content("Player 1 took 1 4(s) from Player 2"))
+      expect(session2).to_not(have_content("Player 1 asked for 4(s) and took 1 4(s) from Player 2"))
       take_turn(session1, "4 of Diamonds", "1")
       session1.click_on("Ok")
-      expect(session2).to(have_content("Player 1 took 1 4(s) from Player 2"))
+      expect(session2).to(have_content("Player 1 asked for 4(s) and took 1 4(s) from Player 2"))
     end
 
     it("displays the results in order", :js) do
@@ -118,10 +118,8 @@ RSpec.describe Server do
       session1.click_on("Ok")
       take_turn(session1, "9 of Spades", "1")
       session1.click_on("Ok")
-      #binding.pry
-      expect(session2).to(have_css('.round-result:first-child',
-         text: "Player 1 asked for 4s and took 1 4(s) from Player 2"))
-      expect(session2).to(have_css('.round-result:nth-child(2)', text: "Player 1 asked for 9s and took 1 card(s) from the deck"))
+      expect(session2.all('.round-result')[0].text).to(eq("Player 1 asked for 9s and took 1 card(s) from the deck"))
+      expect(session2.all('.round-result')[1].text).to(eq("Player 1 asked for 4s and took 1 4(s) from Player 2"))
     end
   end
 
@@ -172,7 +170,7 @@ RSpec.describe Server do
       expect(session1).to_not have_content("Player 1")
     end
 
-    it("displays information about the previous turn") do
+    xit("displays information about the previous turn") do
       take_turn(session1, "2 of Diamonds", "1")
       session1.click_on("Ok")
       session2.click_on("Try to Take Turn")
@@ -371,6 +369,7 @@ RSpec.describe Server do
     it("lists the players in the order they placed in") do
       take_turn(session2, "3 of Spades", "0")
       session2.click_on("Ok")
+      binding.pry
       [session1, session2].each do |session|
         expect(session).to(have_css('.game-result-player:first-child', text: "Player 2"))
         expect(session).to(have_css('.game-result-player:nth-child(2)', text: "Player 1"))

@@ -85,13 +85,11 @@ class Server < Sinatra::Base
     # TODO: Just pass the 3 instead of 3-D. Then you don't need to find the card frm string only to get the rank from it.
     asked_card = Card.from_str(params[:card])
     asked_player = Player.get_player_by_id(params[:player_id].to_i)
-    session[:turn_result] = self.class.game.play_turn(asked_player,
-      asked_card.rank)
+    session[:turn_result] = self.class.game.play_turn(asked_player, asked_card.rank)
     # TODO: make the game handle this instead of the server
     self.class.game.increment_turn_counter if !session[:turn_result].matched_rank?
-    if self.class.game.over?
-      pusher_client.trigger('go-fish', 'game-over', {message: "a"})
-    end
+    pusher_client.trigger('go-fish', 'game-over', {message: "a"}) if self.class.game.over?
+    pusher_client.trigger('go-fish', 'game-changed', {message: "game changed"}) if !self.class.game.over?
     redirect '/turn_results'
   end
 
