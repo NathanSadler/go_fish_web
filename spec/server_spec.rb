@@ -410,7 +410,6 @@ RSpec.describe Server do
     it("lists the players in the order they placed in") do
       take_turn(session2, "3 of Spades", "0")
       session2.click_on("Ok")
-      binding.pry
       [session1, session2].each do |session|
         expect(session).to(have_css('.game-result-player:first-child', text: "Player 2"))
         expect(session).to(have_css('.game-result-player:nth-child(2)', text: "Player 1"))

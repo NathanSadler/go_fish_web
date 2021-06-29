@@ -14,8 +14,8 @@ class Server < Sinatra::Base
   @@game_created = false
 
   def self.game
+    set_game_created(true)
     @@game ||= Game.new
-    #self.class.set_game_created(true)
   end
 
   def pusher_client
