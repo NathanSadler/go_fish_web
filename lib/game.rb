@@ -21,6 +21,7 @@ class Game
   def save_round_result(new_round_result)
     temp_array = saved_rounds
     set_saved_rounds(temp_array.unshift(new_round_result))
+    saved_rounds[0]
   end
 
   def turn_player

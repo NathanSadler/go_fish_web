@@ -140,15 +140,20 @@ describe "Game" do
     end
     let(:player1) {game.players[0]}
     let(:player2) {game.players[1]}
+    let(:result) {RoundResult.new(cards: [Card.new("4", "C")], recieving_player: player1,
+    expected_rank: "H", source: "the deck")}
+    let(:result2) {RoundResult.new(cards: [Card.new("7", "D")], recieving_player: player2,
+    expected_rank: "S", source: player1)}
 
     it("saves the results of a round") do
-      result = RoundResult.new(cards: [Card.new("4", "C")], recieving_player: player1,
-      expected_rank: "H", source: "the deck")
       game.save_round_result(result)
-      result2 = RoundResult.new(cards: [Card.new("7", "D")], recieving_player: player2,
-      expected_rank: "S", source: player1)
       game.save_round_result(result2)
       expect(game.saved_rounds).to(eq([result2, result]))
+    end
+
+    it("returns the round result it saved") do
+      saved_result = game.save_round_result(result)
+      expect(saved_result).to(eq(result))
     end
 
   end
