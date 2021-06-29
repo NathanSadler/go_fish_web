@@ -53,6 +53,13 @@ RSpec.describe Server do
     Server.reset_game
   end
 
+  context('.set_game_created') do
+    it("sets the value of the game_created class variable") do
+      Server.set_game(true)
+      expect(Server.game_created?)
+    end
+  end
+
   context('creating a game') do
     let (:test_session) {Capybara::Session.new(:rack_test, Server.new)}
 

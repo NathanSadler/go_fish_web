@@ -11,8 +11,11 @@ require_relative 'lib/card'
 require_relative 'lib/round_result'
 
 class Server < Sinatra::Base
+  @@game_created = false
+
   def self.game
     @@game ||= Game.new
+    #self.class.set_game_created(true)
   end
 
   def pusher_client
@@ -25,12 +28,21 @@ class Server < Sinatra::Base
     )
   end
 
+  def self.set_game_created(new_state)
+    @@game_created = new_state
+  end
+
+  def self.game_created?
+    @@game_created
+  end
+
   def self.set_game(new_game)
     @@game = new_game
   end
 
   def self.reset_game
     @@game = nil
+    set_game_created(false)
   end
 
   configure :development do
