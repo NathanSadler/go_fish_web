@@ -82,6 +82,7 @@ class Server < Sinatra::Base
   end
 
   get '/create_game' do
+    redirect('/waiting_room') if Server.game_created?
     slim :create_game
   end
 
