@@ -71,6 +71,7 @@ class Server < Sinatra::Base
       current_game.deck.shuffle
       current_game.deal_cards
     end
+    redirect('/game_results') if self.class.game.over?
     redirect('/wait_to_start') if current_game.players.length < current_game.min_players
     slim :waiting_room, locals: { game: self.class.game, current_player: session[:current_player] }
   end
@@ -86,7 +87,11 @@ class Server < Sinatra::Base
     asked_player = Player.get_player_by_id(params[:player_id].to_i)
     session[:turn_result] = self.class.game.play_turn(asked_player,
       asked_card.rank)
+    # TODO: make the game handle this instead of the server
     self.class.game.increment_turn_counter if !session[:turn_result].matched_rank?
+    if self.class.game.over?
+      pusher_client.trigger('go-fish', 'game-over', {message: "a"})
+    end
     redirect '/turn_results'
   end
 
@@ -94,6 +99,10 @@ class Server < Sinatra::Base
     turn_result = session[:turn_result]
     is_over = self.class.game.over?
     slim :turn_results, locals: {turn_result: turn_result, game_over: is_over}
+  end
+
+  get '/game_results' do
+    slim :game_results, locals: {game: self.class.game}
   end
 
   get '/:slug' do

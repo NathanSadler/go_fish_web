@@ -151,7 +151,6 @@ RSpec.describe Server do
       Server.game.players[0].set_hand([Card.new("2", "D"), Card.new("3", "D"), Card.new("K", "S")])
       Server.game.players[1].set_hand([Card.new("3", "S")])
       session1.click_on "Try to Take Turn"
-      #binding.pry
       expect(session1).to(have_content("3 of Diamonds"))
       take_turn(session1, "3 of Diamonds", "1")
       expect(session2).to(have_content("Player 1 took 1 3(s) from Player 2"))
@@ -293,12 +292,17 @@ RSpec.describe Server do
   end
 
   context "game ending" do
+    before(:each) do
+      Server.reset_game
+      Player.clear_players
+    end
+
     let(:game) {Server.game}
     let(:game_result_header) {"Game Over"}
-    let(:session1) {Capybara::Session.new(:selenium_chrome_headless, Server.new)}
+    let(:session1) {Capybara::Session.new(:selenium_chrome, Server.new)}
     let(:session2) {Capybara::Session.new(:selenium_chrome, Server.new)}
 
-    before(:each, :js) do
+    before(:each) do
       [session1, session2].each_with_index do |session, index|
         session.visit '/'
         session.fill_in :name, with: "Player #{index + 1}"
@@ -315,14 +319,16 @@ RSpec.describe Server do
       session1.click_on("Try to Take Turn")
     end
 
-    xit("redirects players in the waiting room to the game results when the "+
-      "game is over") do
+    it("redirects players in the waiting room to the game results when the "+
+      "game is over", :js) do
       take_turn(session1, "3 of Clubs", "1")
+      session1.click_on("Ok")
       expect(session2).to(have_content(game_result_header))
     end
 
     it("directs the player playing the last turn to the game results after "+
-    "viewing the results of the last turn") do
+    "viewing the results of the last turn", :js) do
+      #binding.pry
       take_turn(session1, "3 of Clubs", "1")
       session1.click_on("Ok")
       expect(session1).to(have_content(game_result_header))
