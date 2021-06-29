@@ -1,7 +1,7 @@
 require_relative 'deck'
 require_relative 'round_result'
 class Game
-  attr_reader :max_players, :min_players, :move_pointer, :deck, :turn_counter
+  attr_reader :max_players, :min_players, :move_pointer, :deck, :turn_counter, :saved_rounds
   attr_accessor :players
 
   def initialize(max_players = 7, min_players = 2)
@@ -10,11 +10,17 @@ class Game
     @min_players = min_players
     @move_pointer = nil
     @turn_counter = 0
+    @saved_rounds = []
     @deck = Deck.new
   end
 
   def add_player(player)
     players.append(player)
+  end
+
+  def save_round_result(new_round_result)
+    temp_array = saved_rounds
+    set_saved_rounds(temp_array.unshift(new_round_result))
   end
 
   def turn_player
@@ -54,4 +60,7 @@ class Game
       @turn_counter = new_value % players.length
     end
 
+    def set_saved_rounds(new_saved_rounds)
+      @saved_rounds = new_saved_rounds
+    end
 end

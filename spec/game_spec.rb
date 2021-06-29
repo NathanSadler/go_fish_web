@@ -134,6 +134,25 @@ describe "Game" do
     end
   end
 
+  context '#save_round_result' do
+    before(:each) do
+      2.times {game.add_player(Player.new)}
+    end
+    let(:player1) {game.players[0]}
+    let(:player2) {game.players[1]}
+
+    it("saves the results of a round") do
+      result = RoundResult.new(cards: [Card.new("4", "C")], recieving_player: player1,
+      expected_rank: "H", source: "the deck")
+      game.save_round_result(result)
+      result2 = RoundResult.new(cards: [Card.new("7", "D")], recieving_player: player2,
+      expected_rank: "S", source: player1)
+      game.save_round_result(result2)
+      expect(game.saved_rounds).to(eq([result2, result]))
+    end
+
+  end
+
   context '#increment_turn_counter' do
     before(:each) do
       2.times {game.add_player(Player.new("Test Player"))}
