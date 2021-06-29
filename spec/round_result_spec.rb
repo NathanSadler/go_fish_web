@@ -82,4 +82,22 @@ describe RoundResult do
       expect(test_result.hidden_message).to(eq("You took no cards"))
     end
   end
+
+  context('#public_message') do
+    it("displays the recieved cards if the card rank matches the requested "+
+    "rank") do
+      test_result = RoundResult.new(cards: test_cards, recieving_player: test_player,
+      source: "the deck", expected_rank: "7")
+      expected_message = "Test Player took 1 7(s) from the deck"
+      expect(test_result.public_message).to(eq(expected_message))
+    end
+
+    it("hides the rank of the recieved cards if the card rank doesn't match "+
+    "the requested rank") do
+      test_result = RoundResult.new(cards: test_cards, recieving_player: test_player,
+      source: "the deck", expected_rank: "8")
+      expected_message = "Test Player took 1 card(s) from the deck"
+      expect(test_result.public_message).to(eq(expected_message))
+    end
+  end
 end

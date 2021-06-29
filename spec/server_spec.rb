@@ -78,6 +78,41 @@ RSpec.describe Server do
     end
   end
 
+  context("displaying turn info on the waiting_room page") do
+    before(:each) do
+      Server.reset_game
+      Player.clear_players
+    end
+
+    let(:game) {Server.game}
+    let(:game_result_header) {"Game Over"}
+    let(:session1) {Capybara::Session.new(:selenium_chrome_headless, Server.new)}
+    let(:session2) {Capybara::Session.new(:selenium_chrome_headless, Server.new)}
+
+    before(:each) do
+      [session1, session2].each_with_index do |session, index|
+        session.visit '/'
+        session.fill_in :name, with: "Player #{index + 1}"
+        session.click_on 'Join'
+      end
+      [session1, session2].each {|session| session.click_on 'Proceed to Game'}
+    end
+
+    before(:each) do
+      game.players[0].set_hand([Card.new("3", "C"), Card.new("3", "D"),
+        Card.new("3", "H"), Card.new("4", "D")])
+      game.players[1].set_hand([Card.new("3", "S"), Card.new("4", "C"), Card.new("7", "H")])
+      game.deck.send(:set_cards, [Card.new("8", "S"), Card.new("10", "D")])
+      session1.click_on("Try to Take Turn")
+    end
+
+    xit("displays the results of each turn as they happen", :js) do
+      take_turn(session1, "4 of Diamonds", "1")
+      session1.click_on("Ok")
+      expect(session2).to(have_content("Player 1 took 1 4(s) from Player 2"))
+    end
+  end
+
   context("the take_turn page") do
     before(:each) do
       Server.game.players[0].set_hand([Card.new("2", "D"), Card.new("3", "D"), Card.new("K", "S")])
@@ -85,6 +120,7 @@ RSpec.describe Server do
       session1.click_on "Try to Take Turn"
     end
 
+    # TODO: inspect how it seems to just fail for fun sometimes
     it("displays the cards in the player's hand") do
       expect(session1).to have_content("2 of Diamonds")
       take_turn(session1, "2 of Diamonds", "1")
@@ -124,7 +160,7 @@ RSpec.describe Server do
       expect(session1).to_not have_content("Player 1")
     end
 
-    xit("displays information about the previous turn") do
+    it("displays information about the previous turn") do
       take_turn(session1, "2 of Diamonds", "1")
       session1.click_on("Ok")
       session2.click_on("Try to Take Turn")
