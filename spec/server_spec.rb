@@ -58,7 +58,7 @@ RSpec.describe Server do
 
     before(:each) do
       Server.reset_game
-      test_session.visit '/game_creation'
+      test_session.visit '/create_game'
     end
 
     it("lets users create a game with a specific number of players and bots") do
