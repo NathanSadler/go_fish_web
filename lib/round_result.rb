@@ -29,7 +29,7 @@ class RoundResult
     else
       displayed_card_info = "card"
     end
-    "#{recieving_player.name} took #{cards.length} #{displayed_card_info}(s) from #{source_name}"
+    "#{recieving_player.name} asked for #{expected_rank}s and took #{cards.length} #{displayed_card_info}(s) from #{source_name}"
   end
 
   # Returns the name of the source

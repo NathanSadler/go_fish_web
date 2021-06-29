@@ -100,16 +100,23 @@ RSpec.describe Server do
 
     before(:each) do
       game.players[0].set_hand([Card.new("3", "C"), Card.new("3", "D"),
-        Card.new("3", "H"), Card.new("4", "D")])
+        Card.new("3", "H"), Card.new("4", "D")], Card.new("9", "S"))
       game.players[1].set_hand([Card.new("3", "S"), Card.new("4", "C"), Card.new("7", "H")])
       game.deck.send(:set_cards, [Card.new("8", "S"), Card.new("10", "D")])
       session1.click_on("Try to Take Turn")
     end
 
-    xit("displays the results of each turn as they happen", :js) do
+    it("displays the results of each turn as they happen", :js) do
+      expect(session2).to_not(have_content("Player 1 took 1 4(s) from Player 2"))
       take_turn(session1, "4 of Diamonds", "1")
       session1.click_on("Ok")
       expect(session2).to(have_content("Player 1 took 1 4(s) from Player 2"))
+    end
+
+    is("displays the results in order", :js) do
+      take_turn(session1, "9 of Spades", "1")
+      session1.click_on("Ok")
+
     end
   end
 

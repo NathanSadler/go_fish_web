@@ -88,7 +88,7 @@ describe RoundResult do
     "rank") do
       test_result = RoundResult.new(cards: test_cards, recieving_player: test_player,
       source: "the deck", expected_rank: "7")
-      expected_message = "Test Player took 1 7(s) from the deck"
+      expected_message = "Test Player asked for 7s and took 1 7(s) from the deck"
       expect(test_result.public_message).to(eq(expected_message))
     end
 
@@ -96,7 +96,7 @@ describe RoundResult do
     "the requested rank") do
       test_result = RoundResult.new(cards: test_cards, recieving_player: test_player,
       source: "the deck", expected_rank: "8")
-      expected_message = "Test Player took 1 card(s) from the deck"
+      expected_message = "Test Player asked for 8s and took 1 card(s) from the deck"
       expect(test_result.public_message).to(eq(expected_message))
     end
   end
