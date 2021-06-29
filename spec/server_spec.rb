@@ -147,7 +147,7 @@ RSpec.describe Server do
 
     let(:player1) {Server.game.players[0]}
 
-    xit("displays turn results as they happen") do
+    it("displays turn results as they happen") do
       Server.game.players[0].set_hand([Card.new("2", "D"), Card.new("3", "D"), Card.new("K", "S")])
       Server.game.players[1].set_hand([Card.new("3", "S")])
       session1.click_on "Try to Take Turn"
