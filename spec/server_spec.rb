@@ -299,8 +299,8 @@ RSpec.describe Server do
 
     let(:game) {Server.game}
     let(:game_result_header) {"Game Over"}
-    let(:session1) {Capybara::Session.new(:selenium_chrome, Server.new)}
-    let(:session2) {Capybara::Session.new(:selenium_chrome, Server.new)}
+    let(:session1) {Capybara::Session.new(:selenium_chrome_headless, Server.new)}
+    let(:session2) {Capybara::Session.new(:selenium_chrome_headless, Server.new)}
 
     before(:each) do
       [session1, session2].each_with_index do |session, index|
