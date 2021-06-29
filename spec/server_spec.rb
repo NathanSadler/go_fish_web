@@ -55,8 +55,16 @@ RSpec.describe Server do
 
   context('.set_game_created') do
     it("sets the value of the game_created class variable") do
-      Server.set_game(true)
-      expect(Server.game_created?)
+      Server.set_game_created(false)
+      expect(Server.game_created?).to(eq(false))
+    end
+  end
+
+  context('.game_created?') do
+    it("returns the value of the game_created class variable") do
+      expect(Server.game_created?).to(eq(true))
+      Server.set_game_created(false)
+      expect(Server.game_created?).to(eq(false))
     end
   end
 
