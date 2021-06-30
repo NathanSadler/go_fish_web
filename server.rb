@@ -71,9 +71,13 @@ class Server < Sinatra::Base
   end
 
   post '/wait_to_start' do
-    session[:current_player] = Player.new(params['name']) if params['name'].nil?
+    session[:current_player] = Player.new(params['name']) if !params['name'].nil?
+    # For whatever reason, the first player never gets past here but the
+    # second player does
     redirect('/create_game') if !Server.game_created?
-    self.class.game.add_player(session[:current_player])
+    #binding.pry
+    current_game = self.class.game
+    current_game.add_player(session[:current_player]) if !current_game.players.include?(session[:current_player])
     redirect('/wait_to_start')
   end
 
@@ -88,14 +92,17 @@ class Server < Sinatra::Base
 
   post '/create_game' do
     self.class.set_game(Game.new(params[:minimum_players].to_i, params[:maximum_players].to_i, params[:maximum_bots].to_i))
+    self.class.game.add_player(session[:current_player])
+    #binding.pry
     redirect('/waiting_room')
   end
 
   get '/waiting_room' do
+    # binding.pry
     current_game = self.class.game
-    current_game.shuffle_and_deal if !current_game.deck.cards_dealt?
     redirect('/game_results') if self.class.game.over?
     redirect('/wait_to_start') if current_game.players.length < current_game.min_players
+    current_game.shuffle_and_deal if !current_game.deck.cards_dealt?
     slim :waiting_room, locals: { game: self.class.game, current_player: session[:current_player] }
   end
 

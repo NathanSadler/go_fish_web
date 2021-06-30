@@ -48,7 +48,10 @@ RSpec.describe Server do
     join_game(session1, "Player 1")
     create_game(session1, "2", "2", "0")
     join_game(session2, "Player 2")
-    [session1, session2].each {|session| session.click_on('Proceed to Game')}
+    #binding.pry
+    session1.click_on('Proceed to Game')
+    session2.click_on('Proceed to Game')
+    # [session1, session2].each {|session| session.click_on('Proceed to Game')}
     # [session1, session2].each_with_index do |session, index|
     #   session.visit '/'
     #   session.fill_in :name, with: "Player #{index + 1}"
