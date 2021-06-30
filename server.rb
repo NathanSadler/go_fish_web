@@ -71,9 +71,9 @@ class Server < Sinatra::Base
   end
 
   post '/wait_to_start' do
-    player = Player.new(params['name'])
-    self.class.game.add_player(player)
-    session[:current_player] = player
+    session[:current_player] = Player.new(params['name']) if params['name'].nil?
+    redirect('/create_game') if !Server.game_created?
+    self.class.game.add_player(session[:current_player])
     redirect('/wait_to_start')
   end
 

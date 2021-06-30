@@ -28,6 +28,12 @@ def fill_in_game_form(session, min_players, max_players, max_bots)
   session.select(max_bots.to_s, from: "Maximum Bots")
 end
 
+def join_game(session, name)
+  session.visit '/'
+  session.fill_in :name, with: name
+  session.click_on 'Join'
+end
+
 RSpec.describe Server do
   # include Rack::Test::Methods
   include Capybara::DSL
@@ -39,13 +45,13 @@ RSpec.describe Server do
   let(:session2) {Capybara::Session.new(:rack_test, Server.new)}
 
   before(:each) do
-    [session1, session2].each_with_index do |session, index|
-      session.visit '/'
-      session.fill_in :name, with: "Player #{index + 1}"
-      session.click_on 'Join'
-    end
-    session1.click_on 'Proceed to Game'
-    session2.click_on 'Proceed to Game'
+    # [session1, session2].each_with_index do |session, index|
+    #   session.visit '/'
+    #   session.fill_in :name, with: "Player #{index + 1}"
+    #   session.click_on 'Join'
+    # end
+    # session1.click_on 'Proceed to Game'
+    # session2.click_on 'Proceed to Game'
   end
 
   after(:each) do
@@ -91,12 +97,29 @@ RSpec.describe Server do
   end
 
   context('user enters their name and waits for the game to start') do
-    it("takes the user to a waiting page") do
-      test_session = Capybara::Session.new(:rack_test, Server.new)
-      test_session.visit '/'
-      test_session.fill_in :name, with: "Test Player"
-      test_session.click_on 'Join'
-      expect(test_session).to have_content("Wait For Other Players")
+    before(:each) do
+      Server.reset_game
+      Player.clear_players
+    end
+
+    let(:test_session) {Capybara::Session.new(:rack_test, Server.new)}
+
+    before(:each) do
+      join_game(test_session, "Test Player")
+    end
+
+    it("takes the user to a waiting page if a game has been created") do
+      #binding.pry
+      create_game(test_session, "3", "3", "0")
+      test_session_2 = Capybara::Session.new(:rack_test, Server.new)
+      join_game(test_session_2, "Test Player 2")
+      expect(test_session_2).to have_content("Wait For Other Players")
+    end
+
+    it("directs players to the create_game page after submitting info if there "+
+    "isn't one already") do
+      #binding.pry
+      expect(test_session.current_path).to(eq("/create_game"))
     end
   end
 
