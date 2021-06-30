@@ -28,6 +28,11 @@ class Game
     players[turn_counter]
   end
 
+  def shuffle_and_deal
+    deck.shuffle
+    deal_cards
+  end
+
   def over?
     player_card_counts = players.map {|player| player.hand.length}
     reduced_card_count = player_card_counts.reduce(0) {|sum, card_count| sum += card_count}

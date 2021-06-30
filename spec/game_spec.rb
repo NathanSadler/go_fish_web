@@ -1,5 +1,6 @@
 require_relative '../lib/game'
 require_relative '../lib/player'
+require_relative '../lib/deck'
 require_relative '../lib/round_result'
 require 'pry'
 
@@ -106,6 +107,33 @@ describe "Game" do
       [1, 2, 3].each {|time| game.add_player(Player.new("Player #{time}"))}
       game.increment_turn_counter
       expect(game.turn_player).to(eq(game.players[1]))
+    end
+  end
+
+  context '#shuffle_and_deal' do
+
+    let(:test_game) {Game.new}
+
+    before(:each) do
+      3.times {test_game.add_player(Player.new)}
+      test_game.shuffle_and_deal
+    end
+
+    let(:test_deck) {test_game.deck}
+
+    it("shuffles the cards") do
+      second_deck = Deck.new
+      while test_deck.cards_in_deck != second_deck.cards_in_deck
+        second_deck.draw_card
+      end
+      expect(test_deck.cards.map(&:suit) == second_deck.cards.map(&:suit)).to(eq(false))
+      expect(test_deck.cards.map(&:rank) == second_deck.cards.map(&:rank)).to(eq(false))
+    end
+
+    it("deals the cards") do
+      (0..2).each {|index| expect(test_game.players[index].hand.length).to(eq(7))}
+      # Make sure they didn't somehow get the same cards, either
+      expect(test_game.players[0].hand == test_game.players[1].hand).to(eq(false))
     end
   end
 
