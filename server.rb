@@ -18,6 +18,13 @@ class Server < Sinatra::Base
     @@game ||= Game.new
   end
 
+  def self.add_and_session(name)
+    binding.pry
+    player = Player.new(name)
+    game.add_player(player)
+    session[:current_player] = player
+  end
+
   def pusher_client
     @pusher_client ||= Pusher::Client.new(
       app_id: '1225800',
@@ -78,9 +85,9 @@ class Server < Sinatra::Base
     redirect('/create_game') if !Server.game_created?
     #binding.pry
     # print("AAAAAA") if session[:current_player].nil?
-    if session[:current_player].nil?
-      
+    session[:current_player] = self.class.game.add_player(Player.new(session[:player_name]))[-1] if session[:current_player].nil?
     self.class.game.add_player(session[:current_player]) if !self.class.game.players.include?(session[:current_player])
+    # binding.pry
     redirect('/wait_to_start')
   end
 
@@ -97,6 +104,7 @@ class Server < Sinatra::Base
     self.class.set_game(Game.new(params[:minimum_players].to_i, params[:maximum_players].to_i, params[:maximum_bots].to_i))
     player = Player.new(session[:player_name])
     self.class.game.add_player(player)
+    session[:current_player] = player
     redirect('/waiting_room')
   end
 
@@ -118,7 +126,6 @@ class Server < Sinatra::Base
     # TODO: Just pass the 3 instead of 3-D. Then you don't need to find the card frm string only to get the rank from it.
     asked_card = Card.from_str(params[:card])
     asked_player = Player.get_player_by_id(params[:player_id].to_i)
-    binding.pry
     session[:turn_result] = self.class.game.play_turn(asked_player, asked_card.rank)
     # TODO: make the game handle this instead of the server
     self.class.game.increment_turn_counter if !session[:turn_result].matched_rank?
