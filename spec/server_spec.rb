@@ -503,10 +503,12 @@ RSpec.describe Server do
       game.players[1].set_hand([Card.new("3", "S")])
       game.deck.send(:set_cards, [])
       session1.click_on("Try to Take Turn")
+      #binding.pry
     end
 
     it("redirects players in the waiting room to the game results when the "+
       "game is over", :js) do
+      binding.pry
       take_turn(session1, "3 of Clubs", "1")
       session1.click_on("Ok")
       expect(session2).to(have_content(game_result_header))

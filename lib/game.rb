@@ -1,4 +1,5 @@
 require_relative 'deck'
+require_relative 'bot'
 require_relative 'round_result'
 class Game
   attr_reader :max_players, :min_players, :move_pointer, :deck, :turn_counter, :saved_rounds
@@ -8,14 +9,21 @@ class Game
     @players = []
     @max_players = max_players
     @min_players = min_players
-    @move_pointer = nil
     @turn_counter = 0
     @saved_rounds = []
     @deck = Deck.new
+    add_bots(max_bots)
   end
 
   def add_player(player)
     players.append(player)
+    self.players.sort_by! {|player| player.is_a?(Bot) ? 1 : 0}
+  end
+
+  def add_bots(bots_to_add)
+    bots_to_add.times do
+      add_player(Bot.new("Bot Player"))
+    end
   end
 
   def save_round_result(new_round_result)
@@ -59,11 +67,26 @@ class Game
 
   def increment_turn_counter
     set_turn_counter(turn_counter + 1)
+    # if next player is a bot, play that bot's turn
+    if turn_player.is_a?(Bot)
+      bot_take_turn
+    end
   end
 
   private
     def set_turn_counter(new_value)
       @turn_counter = new_value % players.length
+    end
+
+    def bot_take_turn
+      player_picked = turn_player.select_player_from_game(self)
+      rank_picked = turn_player.hand.sample.rank
+      turn_result = play_turn(player_picked, rank_picked)
+      if turn_result.cards[0].rank == turn_result.expected_rank
+        bot_take_turn
+      else
+        increment_turn_counter
+      end
     end
 
     def set_saved_rounds(new_saved_rounds)

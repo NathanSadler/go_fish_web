@@ -9,4 +9,5 @@ class Bot < Player
       end
     end
   end
+
 end

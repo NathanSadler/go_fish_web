@@ -79,9 +79,6 @@ class Server < Sinatra::Base
 
   post '/wait_to_start' do
     session[:player_name] = params['name'] if !params['name'].nil?
-    #binding.pry
-    # For whatever reason, the first player never gets past here but the
-    # second player does
     redirect('/create_game') if !Server.game_created?
     #binding.pry
     # print("AAAAAA") if session[:current_player].nil?
@@ -113,6 +110,7 @@ class Server < Sinatra::Base
     current_game = self.class.game
     redirect('/game_results') if self.class.game.over?
     redirect('/wait_to_start') if current_game.players.length < current_game.min_players
+
     current_game.shuffle_and_deal if !current_game.deck.cards_dealt?
     slim :waiting_room, locals: { game: self.class.game, current_player: session[:current_player] }
   end
