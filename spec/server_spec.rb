@@ -316,8 +316,8 @@ RSpec.describe Server do
       session2.click_on("Try to Take Turn")
       take_turn(session2, "3 of Spades", "0")
       session2.click_on("Ok")
-      expect(Server.game.players[1].has_card?(Card.new("3", "S"))).to(eq(true))
-      expect(Server.game.players[0].has_card?(Card.new("3", "S"))).to(eq(false))
+      expect(Server.game.players[1].has_card?(Card.new("3", "D"))).to(eq(true))
+      expect(Server.game.players[0].has_card?(Card.new("3", "D"))).to(eq(false))
     end
 
     it("doesn't alter any of the player's previous cards after getting one " +
