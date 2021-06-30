@@ -168,11 +168,9 @@ RSpec.describe Server do
     let(:session2) {Capybara::Session.new(:selenium_chrome_headless, Server.new)}
 
     before(:each) do
-      [session1, session2].each_with_index do |session, index|
-        session.visit '/'
-        session.fill_in :name, with: "Player #{index + 1}"
-        session.click_on 'Join'
-      end
+      join_game(session1, "Player 1")
+      create_game(session1, "2", "2", "0")
+      join_game(session2, "Player 2")
       [session1, session2].each {|session| session.click_on 'Proceed to Game'}
     end
 
@@ -205,6 +203,7 @@ RSpec.describe Server do
     before(:each) do
       Server.game.players[0].set_hand([Card.new("2", "D"), Card.new("3", "D"), Card.new("K", "S")])
       Server.game.players[1].set_hand([Card.new("3", "S")])
+      Server.game.deck.send(:set_cards, [Card.new("Q", "D")])
       session1.click_on "Try to Take Turn"
     end
 
@@ -233,6 +232,7 @@ RSpec.describe Server do
     end
 
     it("lets users select a card") do
+      #binding.pry
       expect {session1.choose("2 of Diamonds")}.to_not raise_error
     end
 
@@ -261,11 +261,9 @@ RSpec.describe Server do
     let(:session2) {Capybara::Session.new(:selenium_chrome, Server.new)}
 
     before(:each, :js) do
-      [session1, session2].each_with_index do |session, index|
-        session.visit '/'
-        session.fill_in :name, with: "Player #{index + 1}"
-        session.click_on 'Join'
-      end
+      join_game(session1, "Player 1")
+      create_game(session1, "2", "2", "0")
+      join_game(session2, "Player 2")
       [session1, session2].each {|session| session.click_on 'Proceed to Game'}
     end
 
@@ -427,11 +425,9 @@ RSpec.describe Server do
     let(:session2) {Capybara::Session.new(:selenium_chrome_headless, Server.new)}
 
     before(:each) do
-      [session1, session2].each_with_index do |session, index|
-        session.visit '/'
-        session.fill_in :name, with: "Player #{index + 1}"
-        session.click_on 'Join'
-      end
+      join_game(session1, "Player 1")
+      create_game(session1, "2", "2", "0")
+      join_game(session2, "Player 2")
       [session1, session2].each {|session| session.click_on 'Proceed to Game'}
     end
 
@@ -476,11 +472,9 @@ RSpec.describe Server do
     let(:session2) {Capybara::Session.new(:selenium_chrome_headless, Server.new)}
 
     before(:each) do
-      [session1, session2].each_with_index do |session, index|
-        session.visit '/'
-        session.fill_in :name, with: "Player #{index + 1}"
-        session.click_on 'Join'
-      end
+      join_game(session1, "Player 1")
+      create_game(session1, "2", "2", "0")
+      join_game(session2, "Player 2")
       [session1, session2].each {|session| session.click_on 'Proceed to Game'}
     end
 
