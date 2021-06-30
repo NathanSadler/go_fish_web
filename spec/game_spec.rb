@@ -55,8 +55,8 @@ describe "Game" do
   context '#play_turn' do
     before(:each) do
       [1, 2].each {|time| game.add_player(Player.new("Player #{time}"))}
-      game.players[0].set_hand([Card.new("2", "D"), Card.new("3", "D"), Card.new("K", "S")])
-      game.players[1].set_hand([Card.new("3", "S")])
+      game.players[0].set_hand([Card.new("2", "D"), Card.new("3", "D"), Card.new("K", "S"), Card.new("9", "H")])
+      game.players[1].set_hand([Card.new("3", "S"), Card.new("9", "D")])
       game.deck.send(:set_cards, [Card.new("4", "C")])
     end
     let(:player1) {game.players[0]}
@@ -72,6 +72,13 @@ describe "Game" do
     "a rank they have") do
       game.play_turn(player2, "3")
       expect(player2.has_card?(Card.new("3", "S"))).to(eq(false))
+    end
+
+    it("lets players other than player 1 take cards") do
+      game.send(:set_turn_counter, 1)
+      game.play_turn(player1, "9")
+      expect(player2.has_card?(Card.new("9", "H"))).to(eq(true))
+      expect(player1.has_card?(Card.new("9", "H"))).to(eq(false))
     end
 
     it("returns the card(s) that the turn_player recieved") do
