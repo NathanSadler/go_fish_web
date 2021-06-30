@@ -286,7 +286,7 @@ RSpec.describe Server do
     before(:each) do
       Server.game.players[0].set_hand([Card.new("2", "D"), Card.new("3", "D"), Card.new("K", "S")])
       Server.game.players[1].set_hand([Card.new("3", "S"), Card.new("K", "D"), Card.new("K", "H")])
-      Server.game.deck.send(:set_cards, [Card.new("7", "H")])
+      Server.game.deck.send(:set_cards, [Card.new("7", "H"), Card.new("8", "S")])
       session1.click_on "Try to Take Turn"
       session1.choose("1")
     end
@@ -308,6 +308,16 @@ RSpec.describe Server do
       rank_three_cards = player1.hand.select {|card| card.rank == "K"}
       rank_three_suits = rank_three_cards.map(&:suit)
       expect(rank_three_suits.sort).to(eq(["D", "H", "S"]))
+    end
+
+    it("lets players other than the first one get cards") do
+      take_turn(session1, "2 of Diamonds", "1")
+      session1.click_on("Ok")
+      session2.click_on("Try to Take Turn")
+      take_turn(session2, "3 of Spades", "0")
+      session2.click_on("Ok")
+      expect(Server.game.players[1].has_card?(Card.new("3", "S"))).to(eq(true))
+      expect(Server.game.players[0].has_card?(Card.new("3", "S"))).to(eq(false))
     end
 
     it("doesn't alter any of the player's previous cards after getting one " +
