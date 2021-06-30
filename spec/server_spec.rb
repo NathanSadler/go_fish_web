@@ -99,7 +99,7 @@ RSpec.describe Server do
     it("directs players away from the page if a game has been created") do
       create_game(test_session, "3", "3", "0")
       test_session.visit('/create_game')
-      expect(test_session.current_path).to(eq("/wait_to_start"))
+      expect(test_session.current_path).to_not(eq("/create_game"))
     end
   end
 
@@ -149,11 +149,10 @@ RSpec.describe Server do
     "than the minimum number of players in the game") do
       Server.reset_game
       test_session = Capybara::Session.new(:rack_test, Server.new)
-      test_session.visit '/'
-      test_session.fill_in :name, with: "Test Player"
-      test_session.click_on 'Join'
-      test_session.click_on 'Proceed to Game'
-      expect(test_session).to have_content("Wait For Other Players")
+      join_game(test_session, "Astaron")
+      create_game(test_session, "2", "2", "0")
+      test_session.click_on('Proceed to Game')
+      expect(test_session.current_path).to(eq("/wait_to_start"))
     end
   end
 
